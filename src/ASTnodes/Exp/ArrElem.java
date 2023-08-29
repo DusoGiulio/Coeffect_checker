@@ -22,4 +22,10 @@ public class ArrElem extends Exp{
 	public void setExp(Exp arrExp) {
 		ArrExp = arrExp;
 	}
+	
+	@Override
+	public String toString() 
+	{
+		return this.ArrExp.toString()+"["+this.expEl+"]";
+	}
 }

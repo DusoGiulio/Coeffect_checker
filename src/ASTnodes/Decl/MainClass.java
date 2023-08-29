@@ -20,4 +20,11 @@ public class MainClass extends Decl{
 	public NodeId getIdClass() {
 		return idClass;
 	}
+	
+	@Override
+	public String toString() 
+	{
+		return "class "+this.idClass.toString()+" public static void main(String[] args) {\n"
+				+ "System.out.println( "+this.exp.toString()+");\n}";
+	}
 }

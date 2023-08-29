@@ -26,4 +26,10 @@ public class ClassTypeDescriptor  extends TypeDescriptor{
 	public void setCoeff(Coef boolean1) {
 		this.isCoeff = boolean1;
 	}
+	
+	@Override
+	public String toString() 
+	{
+		return "";
+	}
 }

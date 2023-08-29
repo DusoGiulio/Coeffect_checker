@@ -35,4 +35,21 @@ public class MethDecl extends Decl{
 	public Body getBody() {
 		return body;
 	}
+	
+	@Override
+	public String toString() {
+		String acc= new String();
+		acc=acc.concat("public "+ this.getType()+" "+this.retType.toString()+" "+this.id.getName()+"( ");
+		for(VarDecl v: this.getFormals()) 
+		{
+			if(this.getFormals().indexOf(v)==this.getFormals().size()-1){
+				acc=acc.concat(" "+v.toString()+" ");
+			}else {
+				acc=acc.concat(" "+v.toString()+",");
+			}
+		}
+		
+		acc=acc.concat("){\n"+this.body.toString()+"\n}");
+		return acc;
+	}
 }

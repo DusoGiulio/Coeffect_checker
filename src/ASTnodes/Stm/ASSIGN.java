@@ -20,5 +20,9 @@ public class ASSIGN extends Stm{
 	public String getId() {
 		return id;
 	}
-
+	
+	@Override
+	public String toString() {
+		return this.id+"="+this.getLExp().toString()+";";
+	}
 }

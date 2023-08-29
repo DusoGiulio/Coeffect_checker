@@ -12,4 +12,9 @@ public class ArrayTypeDescriptor extends TypeDescriptor {
 		this.element = element;
 	}
 
+	@Override
+	public String toString() 
+	{
+		return "";
+	}
 }

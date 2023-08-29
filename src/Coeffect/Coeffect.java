@@ -30,19 +30,11 @@ public class Coeffect {
 		if (this.coefClass.equals("Nat")) {
 			return new Coeffect(this.coefExpr + ".sup(Nat.one())", "Nat");
 		} else {
-			return new Coeffect(this.coefExpr + ".sup(" + this.coefClass + ".fromNat(Nat.one())", this.coefClass);
+			return new Coeffect(this.coefExpr + ".sup(" + this.coefClass + ".fromNat(Nat.one()))", this.coefClass);
 		}
 	}
 
 	public Coeffect op(Coeffect coef, String op) {
-		Coeffect c= this;
-		if(op.equals("mult")) 
-		{
-			coef=coef.supOne();
-			c=c.supOne();
-			this.coefClass=c.coefClass;
-			this.coefExpr=c.coefExpr;
-		}
 		if (this.coefClass.equals(coef.coefClass)) {
 			return sameClass(op, coef);
 		} else if (this.coefClass.equals("Nat") && !coef.coefClass.equals("Nat")) {
@@ -60,12 +52,12 @@ public class Coeffect {
 	}
 
 	private Coeffect thisNatClass(String op, Coeffect other) {
-		String exp = "(" + other.coefClass + ".fromNat(" + this.coefExpr + ") )." + op + "(" + other.coefExpr + ")";
+		String exp = "(" + other.coefClass + ".fromNat(" + this.coefExpr + "))." + op + "(" + other.coefExpr + ")";
 		return new Coeffect(exp, other.coefClass);
 	}
 
 	private Coeffect otherNatClass(String op, Coeffect other) {
-		String exp = this.coefExpr + "." + op + "(" + this.coefClass + ".fromNat(" + other.coefExpr + ")";
+		String exp = this.coefExpr + "." + op + "(" + this.coefClass + ".fromNat(" + other.coefExpr + "))";
 		return new Coeffect(exp, other.coefClass);
 	}
 

@@ -73,7 +73,7 @@ public class MainMiniJava {
 			        String nomeCartella = "src"+sep+"TestText"; 
 			        String nomeFile = "CoeffectResult.java";
 			        String percorsoCompleto = nomeCartella + sep + nomeFile;
-			        SurceCodeComposer codiceSorgente=new SurceCodeComposer(secondVisit.getClassST(),indirizzoCompleto);
+			        SurceCodeComposer codiceSorgente=new SurceCodeComposer(AST,secondVisit.getClassST(),indirizzoCompleto);
 			        System.out.println("ESEGUO "+nomeFile+" nella cartella "+nomeCartella+"\n");	
 			        new Compile_Execute(codiceSorgente.getCodiceSorgente(),percorsoCompleto,sep);
 			

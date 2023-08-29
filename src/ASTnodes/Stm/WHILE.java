@@ -19,6 +19,12 @@ public class WHILE extends Stm {
 	public Stm getStm1() {
 		return stm1;
 	}
+	
+	@Override 
+	public String toString() 
+	{
+		return "while ("+exp.toString()+"){\n"+this.stm1.toString()+"}";
+	}
 
 
 }

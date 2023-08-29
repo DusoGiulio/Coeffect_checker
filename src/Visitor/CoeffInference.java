@@ -1,47 +1,18 @@
 package Visitor;
 
 import java.util.ArrayList;
+import java.util.ListIterator;
 
-import ASTnodes.Class.Body;
-import ASTnodes.Class.NodeAST;
-import ASTnodes.Class.NodeId;
-import ASTnodes.Decl.ClassDecl;
-import ASTnodes.Decl.FieldDecl;
-import ASTnodes.Decl.MainClass;
-import ASTnodes.Decl.MethDecl;
-import ASTnodes.Decl.VarDecl;
-import ASTnodes.Exp.ArrElem;
-import ASTnodes.Exp.BinOp;
+import ASTnodes.Class.*;
+import ASTnodes.Decl.*;
+import ASTnodes.Exp.*;
 import ASTnodes.Exp.Boolean;
-import ASTnodes.Exp.CallFuncObj;
-import ASTnodes.Exp.Cast;
-import ASTnodes.Exp.Decimal;
-import ASTnodes.Exp.Exp;
-import ASTnodes.Exp.Id;
-import ASTnodes.Exp.Instanceof;
-import ASTnodes.Exp.Lenght;
-import ASTnodes.Exp.New;
-import ASTnodes.Exp.This;
-import ASTnodes.Exp.UnaryOp;
-import ASTnodes.Stm.ARRAYASSIGN;
-import ASTnodes.Stm.ASSIGN;
-import ASTnodes.Stm.IF;
-import ASTnodes.Stm.Multi;
-import ASTnodes.Stm.SOP;
-import ASTnodes.Stm.Stm;
-import ASTnodes.Stm.WHILE;
+import ASTnodes.Stm.*;
 import Attributes.Attribute;
-import Coeffect.Coef;
-import Coeffect.Coeffect;
-import Coeffect.CoeffectTable;
-import Coeffect.VarCoeff;
+import Coeffect.*;
 import Exceptioin.TypeCheckingException;
 import SymbolTable.ClassSymbolTable;
-import TypeDescriptor.ClassTypeDescriptor;
-import TypeDescriptor.CoeffectTypeDescriptor;
-import TypeDescriptor.ErrorTypeDescriptor;
-import TypeDescriptor.MethTypeDescriptor;
-import TypeDescriptor.TypeDescriptor;
+import TypeDescriptor.*;
 
 public class CoeffInference {
 
@@ -94,9 +65,10 @@ public class CoeffInference {
 		CoeffectTable CT = new CoeffectTable();
 		CT.setCoeffectTable(this.visitExp(body.getRetExp()).getCoeffectTable());
 		// visito ogni statement dall'ultimo al primo
-		for (int i = body.getStms().size()-1; i>=0 ; i--) {
-
-				CT=this.visitStm( body.getStms().get(i), CT);
+		ListIterator<Stm> listiter= body.getStms().listIterator(body.getStms().size());
+		while (listiter.hasPrevious()) {
+				
+				CT=this.visitStm( listiter.previous(), CT);
 		}
 		//System.out.println(CT.toString());
 		return CT;
@@ -147,8 +119,10 @@ public class CoeffInference {
 		} else if (stm instanceof Multi) {
 
 			CoeffectTable ctAcc = CT;
-			for (int i = ((Multi) stm).getStms().size() - 1; i >= 0; i--) {
-				ctAcc = this.visitStm(((Multi) stm).getStms().get(i), ctAcc);
+			ListIterator<Stm> listiter= ((Multi) stm).getStms().listIterator(((Multi) stm).getStms().size());
+			while(listiter.hasPrevious()) {
+				
+				ctAcc = this.visitStm(listiter.previous(), ctAcc);
 			}
 			return ctAcc;
 		}
@@ -233,14 +207,14 @@ public class CoeffInference {
 			if(Formals.get(i).getId().getName().equals("this")) 
 			{
 				ArrayList<String> str = this.visitCoeffect(((CoeffectTypeDescriptor) Formals.get(i).getId().getType()).getVarCoeff());
-				cfAcc=cfThis.mult( new Coeffect(str.get(0), str.get(1)));
+				cfAcc=cfThis.mult( new Coeffect(str.get(0), str.get(1)).supOne());
 				i++;
 			}
 			for(int j=i;j<((CallFuncObj) exp).getRexp().size();j++) 
 			{
 				CoeffectTable cf = this.visitExp(((CallFuncObj) exp).getRexp().get(j));
 				ArrayList<String> str = this.visitCoeffect(((CoeffectTypeDescriptor) Formals.get(j).getId().getType()).getVarCoeff());
-				cfThis=cf.mult(new Coeffect(str.get(0), str.get(1)));
+				cfThis=cf.mult(new Coeffect(str.get(0), str.get(1)).supOne());
 				cfAcc=cfAcc.sum(cfThis);
 			}
 			return cfAcc;
@@ -278,29 +252,12 @@ public class CoeffInference {
 
 	private ArrayList<String> visitCoeffect(VarCoeff var) {
 		ArrayList<String> str = new ArrayList<String>();
-		str.add(this.stringExp(var.getExpCoeff()));
+		str.add(var.getExpCoeff().toString());
 		str.add(var.getClassCoeff());
 		return str;
 	}
 
-	private String stringExp(Exp exp) {
 
-		// IDENTIFIER ritorno il tipo dell'ID fra parentesi
-		if (exp instanceof Id) {
-			return (((Id) exp).getId().getName());
-		}
-		// callfunc
-		else if (exp instanceof CallFuncObj) {
-			String left = this.stringExp(((CallFuncObj) exp).getLexp());
-			return left + "." + ((CallFuncObj) exp).getId().getName() + "()";
-		} else if (exp instanceof New) {
-			if (((New) exp).getExp() == null) {
-				return "new " + ((New) exp).getId().getName() + "()";
-			}
-		}
-		return "errore";
-
-	}
 
 	public ClassSymbolTable getClassST() {
 		return classST;

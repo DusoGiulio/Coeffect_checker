@@ -10,4 +10,10 @@ public class Lenght extends Exp{
 	public Exp getExp() {
 		return exp;
 	}
+	
+	@Override
+	public String toString() 
+	{
+		return exp.toString()+".lenght";
+	}
 }

@@ -20,5 +20,10 @@ public class CoeffectTypeDescriptor extends TypeDescriptor {
 	public TypeDescriptor getVarType() {
 		return VarType;
 	}
+	@Override
+	public String toString() 
+	{
+		return this.VarType.toString();
+	}
 
 }

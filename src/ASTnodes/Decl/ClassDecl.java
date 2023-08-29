@@ -30,5 +30,27 @@ public class ClassDecl  extends Decl{
 	public NodeId getIdextends() {
 		return Idextends;
 	}
+	
+	@Override
+	public String toString() 
+	{
+		String acc= new String();
+		if(this.Idextends!=null) 
+		{
+			acc=acc.concat("\n class "+this.IdClass.toString()+" extends "+this.Idextends.toString()+" { \n");
+		}else 
+		{
+			acc=acc.concat("\n class "+this.IdClass.toString()+" {\n ");
+		}
+		
+		for(FieldDecl f:this.vars) {
+			acc=acc.concat("\n"+f.toString()+";\n");
+		}
+		for(MethDecl m:this.mets) {
+			acc=acc.concat("\n"+m.toString()+"\n");
+		}
+		acc=acc.concat("\n}");
+		return acc;
+	}
 
 }

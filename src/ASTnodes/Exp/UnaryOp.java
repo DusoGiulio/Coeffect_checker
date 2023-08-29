@@ -19,5 +19,11 @@ public class UnaryOp extends Exp{
 	public Exp getExp() {
 		return exp;
 	}
+	
+	@Override
+	public String toString() 
+	{
+		return this.op.getText()+exp.toString();
+	}
 
 }

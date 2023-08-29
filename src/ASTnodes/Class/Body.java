@@ -29,5 +29,20 @@ public class Body extends Decl {
 	public Exp getRetExp() {
 		return retExp;
 	}
+	
+	@Override
+	public String toString() {
+		String acc= new String();
+		for(VarDecl v: this.decs) 
+		{
+			acc=acc.concat(v.toString()+";\n");
+		}
+		for(Stm s: this.stms) 
+		{
+			acc=acc.concat(s.toString());
+		}
+		acc=acc.concat("\n return "+this.retExp.toString()+";");
+		return  acc;
+	}
 
 }

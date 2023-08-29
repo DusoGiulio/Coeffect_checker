@@ -13,5 +13,13 @@ public class Multi extends Stm{
 	public ArrayList<Stm> getStms() {
 		return stms;
 	}
-
+	@Override
+	public String toString() {
+		String acc= new String();
+		for(Stm s: this.stms) 
+		{
+			acc=acc.concat("\n"+s.toString()+"\n");
+		}
+		return acc;
+	}
 }

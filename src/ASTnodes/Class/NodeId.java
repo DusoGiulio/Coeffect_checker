@@ -26,5 +26,11 @@ public class NodeId extends NodeAST {
 	public void setType(TypeDescriptor type) {
 		this.type = type;
 	}
+	
+	@Override
+	public String toString() 
+	{
+		return this.name;
+	}
 
 }

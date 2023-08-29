@@ -15,4 +15,8 @@ public abstract class Litteral extends Exp {
 		Value = value;
 	}
 
+	@Override
+	public String toString() {
+		return this.Value;
+	}
 }

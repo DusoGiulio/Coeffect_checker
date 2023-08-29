@@ -25,5 +25,9 @@ public class BinOp extends Exp {
 	public Exp getRexp() {
 		return rexp;
 	}
-
+	
+	@Override 
+	public String toString() {
+		return this.lexp.toString()+op.getText()+this.rexp.toString();
+	}
 }

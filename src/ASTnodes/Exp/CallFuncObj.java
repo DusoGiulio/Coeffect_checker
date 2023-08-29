@@ -40,17 +40,15 @@ public class CallFuncObj extends Exp{
 	}
 	private String rexpString() {
 		String s = "";
-		int i=0;
 		for(Exp exp: this.rexp) 
 		{
-			if(i==0) 
+			if(this.rexp.indexOf(exp)==this.rexp.size()-1) 
 			{
-				s= this.rexp.get(0).toString();
-				i++;
+				s=s.concat(exp.toString());
+			}else {
+				s=" "+s.concat(exp.toString()+",");
 			}
-			s=s.concat(exp.toString());
-		}
-			
+		}			
 		return s;
 	}
 }

@@ -14,4 +14,15 @@ public class MethTypeDescriptor extends TypeDescriptor {
 		return this.isStatic;
 	}
 
+	@Override
+	public String toString() 
+	{
+		if(this.isStatic) 
+		{
+			return "static";
+		}else 
+		{
+			return "";
+		}
+	}
 }

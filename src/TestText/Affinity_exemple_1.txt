@@ -34,13 +34,7 @@ class A {
 
 	Pair duplicate(@Coeffect(coeffClass="Affinity", exp="new Omega()")A this) {
 		@Coeffect(coeffClass="Affinity", exp="Affinity.one()") Pair p;
-		if(1<2)
-		{
-			p= new Pair();
-		}else
-		{
-			p= new Pair();
-		}
+
 		return p.setFields(this,this);
 	}
 	
@@ -155,10 +149,10 @@ class Nat {
 
 	Nat sup(Nat x) {
 		Nat result;
-		if (this.leq(x))
-			result = x;
-		else
-			result = this;
+		if (this.leq(x)){
+			result = x;}
+		else{
+			result = this;}
 		return result;
 	}
 
@@ -185,10 +179,7 @@ class Nat {
 	}
 }
 
-@CoeffectAuxClass("Nat")
-class Zero extends Nat {
 
-}
 
 
 @CoeffectAuxClass("Nat")
@@ -261,4 +252,8 @@ class Triv {
 		return new Triv();
 	}
 }
+@CoeffectAuxClass("Nat")
+ class Zero extends Nat {
+
+	 }
 

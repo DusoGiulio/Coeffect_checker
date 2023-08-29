@@ -14,4 +14,10 @@ public class ARRAYASSIGN extends ASSIGN{
 	public Exp getRexp() {
 		return rexp;
 	}
+	
+	@Override
+	public String toString() 
+	{
+		return this.getId().toString()+"["+this.getLExp().toString()+"]"+" = "+this.getRexp().toString()+";";
+	}
 }

@@ -24,5 +24,9 @@ public class IF extends Stm{
 		return elsestm;
 	}
 
+	 @Override
+	 public String toString() {
+		 return "if ("+this.getExp().toString()+")"+"{\n"+this.ifstm.toString()+"\n}else{\n"+this.getElsestm().toString()+"\n}";
+	 }
 }
 

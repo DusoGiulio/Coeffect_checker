@@ -20,4 +20,10 @@ public class VarCoeff {
 	public Exp getExpCoeff() {
 		return expCoeff;
 	}
+	
+	@Override
+	public String toString() 
+	{
+		return " ";
+	}
 }

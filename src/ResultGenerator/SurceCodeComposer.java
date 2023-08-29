@@ -1,13 +1,19 @@
 package ResultGenerator;
 
+import java.util.ArrayList;
+
+import ASTnodes.Class.NodeAST;
 import ASTnodes.Class.NodeId;
+import ASTnodes.Decl.ClassDecl;
 import Attributes.Attribute;
 import Attributes.ClassAttribute;
 import Coeffect.Coef;
 import Coeffect.CoeffectTable.Element;
 import SymbolTable.ClassSymbolTable;
+import TypeDescriptor.ClassTypeDescriptor;
 import TypeDescriptor.CoeffectTypeDescriptor;
 import TypeDescriptor.MethTypeDescriptor;
+import TypeDescriptor.TypeDescriptor;
 
 public class SurceCodeComposer {
 	
@@ -15,29 +21,28 @@ public class SurceCodeComposer {
 	private ClassSymbolTable classST;
 	private String codiceSorgente=" ";
 	private String destinazioneFile;
+	private ArrayList<NodeAST> AST;
 	
-	public SurceCodeComposer(ClassSymbolTable classST, String indirizzoFile ) {
+	public SurceCodeComposer(ArrayList<NodeAST> AST, ClassSymbolTable classST, String indirizzoFile ) {
 		this.setIndirizzoFile(indirizzoFile);
 		this.setDestinazioneFile(destinazioneFile);
 		this.setClassST(classST);
 		String sourceFilePath = indirizzoFile;
         this.codiceSorgente=this.codiceSorgente.concat("package TestText;");
-        /*try {
-            File file = new File(this.getIndirizzoFile());
-            Scanner scanner = new Scanner(file);
+        this.AST=AST;
+        for(NodeAST node: AST) 
+        {
+        	if(node instanceof ClassDecl) 
+        	{
+        		ClassDecl c= (ClassDecl) node;
 
-            StringBuilder content = new StringBuilder();
 
-            while (scanner.hasNextLine()) {
-                content.append(scanner.nextLine());
-            }
-
-            scanner.close();
-
-            this.codiceSorgente= this.codiceSorgente.concat(content.toString());
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }*/
+				if(((ClassTypeDescriptor)c.getType()).isCoeff()== Coef.COEFF  || ((ClassTypeDescriptor)c.getType()).isCoeff()== Coef.AUXCOEF) 
+				{
+					this.codiceSorgente=this.codiceSorgente.concat(c.toString());
+				}
+        	}
+        }
 		this.codiceSorgente=this.codiceSorgente.concat("public class CoeffectResult {\n" +"\tpublic static void main(String[] args) {\n");
 		this.visitClassST();
 		
@@ -80,19 +85,19 @@ public class SurceCodeComposer {
 		for(Element el: attr.getCoef().getCoeffectTable() )
 		{
 			String coeffect=this.findCoef(attr,el.id);
-			this.codiceSorgente=this.codiceSorgente.concat(this.sys(el.coef.getCoefExpr()+")"+"\"","\""+"\t"+el.id+" | "+"\"+"+"\""+ coeffect +".leq("));
+			this.codiceSorgente=this.codiceSorgente.concat(this.sys("\t"+"\""+el.id+" |\""+"+"+ coeffect +".leq("+el.coef.getCoefExpr()+")", " "));
 		}
 	}
 
 	private String findCoef(Attribute attr,String id) {
 		for (NodeId nId : attr.getFormals().getSymbolTable().keySet()) {
 			if (nId.getName().equals(id)) {
-				return "("+((CoeffectTypeDescriptor)attr.getFormals().lookup(nId).getType()).getVarCoeff().getExpCoeff().toString()+")";
+				return "("+((CoeffectTypeDescriptor)attr.getFormals().lookup(nId).getType()).getVarCoeff().getExpCoeff()+")";
 			}
 		}
 		for (NodeId nId : attr.getLocal().getSymbolTable().keySet()) {
 			if (nId.getName().equals(id)) {
-				return "("+((CoeffectTypeDescriptor)attr.getLocal().lookup(nId).getType()).getVarCoeff().getExpCoeff().toString()+")";
+				return "("+((CoeffectTypeDescriptor)attr.getLocal().lookup(nId).getType()).getVarCoeff().getExpCoeff()+")";
 			}
 		}
 		return null;

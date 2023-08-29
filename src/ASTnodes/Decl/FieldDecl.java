@@ -15,5 +15,10 @@ public class FieldDecl  extends Decl{
 	public NodeId getId() {
 		return id;
 	}
-
+	
+	@Override
+	public String toString() 
+	{
+		return this.getType().toString()+" "+this.getId().toString()+"";
+	}
 }

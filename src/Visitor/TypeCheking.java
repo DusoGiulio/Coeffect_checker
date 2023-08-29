@@ -37,6 +37,7 @@ public class TypeCheking {
 	private TypeDescriptor visitProgram(ArrayList<NodeAST> ast) throws TypeCheckingException{
 		for(NodeAST klass :  ast) 
 		{
+			
 			if(klass instanceof ClassDecl) 
 			{
 				ClassDecl c= (ClassDecl) klass;

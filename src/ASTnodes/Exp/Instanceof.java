@@ -23,6 +23,11 @@ public class Instanceof extends Exp{
 	public void setId(NodeId id) {
 		this.id = id;
 	}
+	@Override
+	public String toString() 
+	{
+		return "("+exp.toString()+" instanceof "+id.toString()+")";
+	}
 
 }
 

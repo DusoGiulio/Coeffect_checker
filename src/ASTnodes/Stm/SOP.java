@@ -13,4 +13,9 @@ public class SOP extends Stm {
 		return exp;
 	}
 
+	@Override
+	public String toString() 
+	{
+		return "System.out.println("+this.exp.toString()+");";
+	}
 }

@@ -19,6 +19,11 @@ public class Cast extends Exp {
 	public NodeId getId() {
 		return id;
 	}
-
+	
+	@Override
+	public String toString() 
+	{
+		return "(("+this.id.toString()+")"+this.exp.toString()+")";
+	}
 
 }
