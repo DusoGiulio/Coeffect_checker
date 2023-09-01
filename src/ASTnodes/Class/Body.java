@@ -14,7 +14,7 @@ public class Body extends Decl {
 	private Exp retExp;
 
 	public Body(TypeDescriptor type, ArrayList<VarDecl> decs, ArrayList<Stm> stms, Exp retExp) {
-		super(type);
+		super(type,0);
 		this.decs = decs;
 		this.stms = stms;
 		this.retExp = retExp;

@@ -7,9 +7,11 @@ public class Instanceof extends Exp{
 	private Exp exp;
 	private NodeId id;
 
-	public Instanceof(NodeId id, Exp exp) {
+	public Instanceof(NodeId id, Exp exp,int line) {
+		super(line);
 		this.id=id;
 		this.exp = exp;
+		
 	}
 
 	public Exp getExp() {

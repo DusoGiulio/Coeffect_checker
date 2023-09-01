@@ -2,9 +2,9 @@ package ASTnodes.Exp;
 
 public class Boolean extends Litteral {
 	
-	public Boolean(String Value)
+	public Boolean(String Value, int line)
 	{
-		super(Value);
+		super(Value,line);
 	}
 }
 

@@ -57,7 +57,7 @@ public class ASTGenerator extends miniJavaBaseVisitor<Object>{
 		//creo un nuovo node id che identificherà il nome della classe e il suo tipo
 		NodeId mainId= new NodeId(mainType,mainIdtxt);
 		//ritorno un nodo mainclass
-		return new MainClass(mainType,mainId,exp);
+		return new MainClass(mainType,mainId,exp, ctx.IDENTIFIER(0).getSymbol().getLine());
 	}
     
     
@@ -107,7 +107,7 @@ public class ASTGenerator extends miniJavaBaseVisitor<Object>{
 		//fine  gestione metodi
 		//---------------------------------------------------------------------------------------------//
 		//ritorno nodo della classe
-		return new ClassDecl(ClassType,classId,extendId,listField,listMets);
+		return new ClassDecl(ClassType,classId,extendId,listField,listMets,ctx.IDENTIFIER(0).getSymbol().getLine());
 		//---------------------------------------------------------------------------------------------//
 	}
 	@Override
@@ -120,7 +120,7 @@ public class ASTGenerator extends miniJavaBaseVisitor<Object>{
 		//creo il nodo che identifica la variabile
 		NodeId varId= new NodeId(type, name);
 		//ritorno il nododell'AST vardecl
-		return new FieldDecl(type,varId);
+		return new FieldDecl(type,varId,ctx.IDENTIFIER().getSymbol().getLine());
 		//---
 	}
 	
@@ -136,7 +136,7 @@ public class ASTGenerator extends miniJavaBaseVisitor<Object>{
 		//creo il nodo che identifica la variabile
 		NodeId varId= new NodeId(type, name);
 		//ritorno il nododell'AST vardecl
-		return new VarDecl(type,varId);
+		return new VarDecl(type,varId,ctx.IDENTIFIER().getSymbol().getLine());
 		//---------------------------------------------------------------------------------------------//
 	}
 	
@@ -151,7 +151,7 @@ public class ASTGenerator extends miniJavaBaseVisitor<Object>{
 		//creo il nodo che identifica la variabile
 		NodeId varId= new NodeId(type, name);
 		//ritorno il nododell'AST vardecl
-		return new VarDecl(type,varId);
+		return new VarDecl(type,varId,ctx.IDENTIFIER().getSymbol().getLine());
 		//---------------------------------------------------------------------------------------------//
 	}
 	@Override
@@ -192,11 +192,11 @@ public class ASTGenerator extends miniJavaBaseVisitor<Object>{
 		if(ctx.THIS()!=null) 
 		{
 			isThis=true;
-			listVar.add(new VarDecl(this.visitTypeCoeff(ctx.typeCoeff()),new NodeId(this.visitTypeCoeff(ctx.typeCoeff()),ctx.THIS().getText()) ));
+			listVar.add(new VarDecl(this.visitTypeCoeff(ctx.typeCoeff()),new NodeId(this.visitTypeCoeff(ctx.typeCoeff()),ctx.THIS().getText()),ctx.THIS().getSymbol().getLine() ));
 		}
 		if(ctx.typeCoeff()!=null && ctx.IDENTIFIER(1)!=null) 
 		{
-			listVar.add(new VarDecl(this.visitTypeCoeff(ctx.typeCoeff()),new NodeId(this.visitTypeCoeff(ctx.typeCoeff()),ctx.IDENTIFIER(1).getText()) ));
+			listVar.add(new VarDecl(this.visitTypeCoeff(ctx.typeCoeff()),new NodeId(this.visitTypeCoeff(ctx.typeCoeff()),ctx.IDENTIFIER(1).getText()),ctx.IDENTIFIER(1).getSymbol().getLine() ));
 		}
 
 		for(VarDeclpContext var: ctx.varDeclp()) 
@@ -237,14 +237,14 @@ public class ASTGenerator extends miniJavaBaseVisitor<Object>{
 		//Creo il nodeId del metodo
 		NodeId methId= new NodeId(methType, methName);
 		//riotno il nodo del metodo
-		return new MethDecl(methType,listVar,methRetType,methId,body);
+		return new MethDecl(methType,listVar,methRetType,methId,body,ctx.IDENTIFIER(0).getSymbol().getLine(),ctx.RETURN().getSymbol().getLine());
 		//---------------------------------------------------------------------------------------------//
 	}
 	@Override
 	public TypeDescriptor visitType(TypeContext ctx) {
 		//---------------------------------------------------------------------------------------------//
 		// In base al tipo creo e ritorno il nodo adatto
-		TypeDescriptor type =new ErrorTypeDescriptor();
+		TypeDescriptor type =new ErrorTypeDescriptor(0);
 		
 		if(ctx.IDENTIFIER()!=null) 
 		{
@@ -279,7 +279,7 @@ public class ASTGenerator extends miniJavaBaseVisitor<Object>{
 			{
 				multiStm.add(this.visitStatement(s));
 			}
-			stm=new Multi(multiStm);
+			stm=new Multi(multiStm,ctx.LBRACE().getSymbol().getLine());
 		}
 		else if(ctx.IF()!=null)
 		{
@@ -287,20 +287,20 @@ public class ASTGenerator extends miniJavaBaseVisitor<Object>{
 			Stm ifstm= this.visitStatement(ctx.statement(0));
 			Stm elsestm=this.visitStatement(ctx.statement(1));
 			
-			stm= new IF( exp, ifstm, elsestm);
+			stm= new IF( exp, ifstm, elsestm,ctx.IF().getSymbol().getLine());
 		}
 		else if(ctx.WHILE()!=null) 
 		{
 			Exp exp = this.visitExp(ctx.exp(0));
 			Stm wstm= this.visitStatement(ctx.statement(0));
 			
-			stm= new WHILE(exp, wstm);
+			stm= new WHILE(exp, wstm,ctx.WHILE().getSymbol().getLine());
 		}
 		else if(ctx.SOP()!=null) 
 		{
 			Exp exp= this.visitExp(ctx.exp(0));
 			
-			stm= new SOP(exp);
+			stm= new SOP(exp,ctx.SOP().getSymbol().getLine());
 		}
 		else if(ctx.IDENTIFIER()!=null) 
 		{
@@ -312,10 +312,10 @@ public class ASTGenerator extends miniJavaBaseVisitor<Object>{
 				if(ctx.LBRACK()!=null) 
 				{
 					expr = this.visitExp(ctx.exp(1));
-					stm= new ARRAYASSIGN(expl,expr,id);
+					stm= new ARRAYASSIGN(expl,expr,id,ctx.IDENTIFIER().getSymbol().getLine());
 				}else 
 				{
-					stm= new ASSIGN(expl,id);	
+					stm= new ASSIGN(expl,id,ctx.IDENTIFIER().getSymbol().getLine());	
 				}
 			}
 
@@ -332,14 +332,14 @@ public class ASTGenerator extends miniJavaBaseVisitor<Object>{
 		//INSTACEOF typedescriptor id a dx, exp classe sx
 		if(ctx.INSTANCEOF()!=null) 
 		{
-			return new Instanceof(new NodeId(new IdTypeDescriptor(ctx.IDENTIFIER().getText()),ctx.IDENTIFIER().getText()),this.visitExp(ctx.exp(0)));
+			return new Instanceof(new NodeId(new IdTypeDescriptor(ctx.IDENTIFIER().getText()),ctx.IDENTIFIER().getText()),this.visitExp(ctx.exp(0)),ctx.INSTANCEOF().getSymbol().getLine());
 		}
 		//UNIOP
 		if( !ctx.exp().isEmpty() && ctx.BANG()!=null)
 		{
 			if(ctx.BANG()!=null) 
 			{
-				return new UnaryOp(ctx.BANG(),this.visitExp(ctx.exp(0)));
+				return new UnaryOp(ctx.BANG(),this.visitExp(ctx.exp(0)),ctx.BANG().getSymbol().getLine());
 			}
 		}
 		//BINOP
@@ -349,39 +349,39 @@ public class ASTGenerator extends miniJavaBaseVisitor<Object>{
 			Exp rexp= this.visitExp(ctx.exp(1));
 			if(ctx.ADD()!=null) 
 			{
-				return new BinOp(ctx.ADD(),lexp,rexp);
+				return new BinOp(ctx.ADD(),lexp,rexp,ctx.ADD().getSymbol().getLine());
 			}
 			if(ctx.SUB()!=null) 
 			{
-				return new BinOp(ctx.SUB(),lexp,rexp);
+				return new BinOp(ctx.SUB(),lexp,rexp,ctx.SUB().getSymbol().getLine());
 			}
 			if(ctx.MUL()!=null) 
 			{
-				return new BinOp(ctx.MUL(),lexp,rexp);
+				return new BinOp(ctx.MUL(),lexp,rexp,ctx.MUL().getSymbol().getLine());
 			}
 			if(ctx.AND()!=null) 
 			{
-				return new BinOp(ctx.AND(),lexp,rexp);
+				return new BinOp(ctx.AND(),lexp,rexp,ctx.AND().getSymbol().getLine());
 			}
 			if(ctx.OR()!=null) 
 			{
-				return new BinOp(ctx.OR(),lexp,rexp);
+				return new BinOp(ctx.OR(),lexp,rexp,ctx.OR().getSymbol().getLine());
 			}
 			if(ctx.GT()!=null) 
 			{
-				return new BinOp(ctx.GT(),lexp,rexp);
+				return new BinOp(ctx.GT(),lexp,rexp,ctx.GT().getSymbol().getLine());
 			}
 			if(ctx.LT()!=null) 
 			{
-				return new BinOp(ctx.LT(),lexp,rexp);
+				return new BinOp(ctx.LT(),lexp,rexp,ctx.LT().getSymbol().getLine());
 			}
 			if(ctx.ASSIGN()!=null) 
 			{
-				return new BinOp(ctx.ASSIGN(),lexp,rexp);
+				return new BinOp(ctx.ASSIGN(),lexp,rexp,ctx.ASSIGN().getSymbol().getLine());
 			}
 			if(ctx.DIV()!=null) 
 			{
-				return new BinOp(ctx.DIV(),lexp,rexp);
+				return new BinOp(ctx.DIV(),lexp,rexp,ctx.DIV().getSymbol().getLine());
 			}
 		}
 		//NEW
@@ -391,42 +391,42 @@ public class ASTGenerator extends miniJavaBaseVisitor<Object>{
 			{
 				if(ctx.LBRACK()!=null) 
 				{
-					return new New(new NodeId(new ArrayTypeDescriptor(new IntTypeDescriptor()),ctx.INT().getText()),this.visitExp(ctx.exp(0)));
+					return new New(new NodeId(new ArrayTypeDescriptor(new IntTypeDescriptor()),ctx.INT().getText()),this.visitExp(ctx.exp(0)),ctx.INT().getSymbol().getLine());
 				}
-				return new New(new NodeId(new IntTypeDescriptor(), ctx.INT().getText()),this.visitExp(ctx.exp(0)));
+				return new New(new NodeId(new IntTypeDescriptor(), ctx.INT().getText()),this.visitExp(ctx.exp(0)),ctx.INT().getSymbol().getLine());
 			}
 			else if(ctx.BOOLEAN()!=null) 
 			{
 				if(ctx.LBRACK()!=null) 
 				{
-					return new New(new NodeId(new ArrayTypeDescriptor(new BoolTypeDescriptor()),ctx.BOOLEAN().getText()),this.visitExp(ctx.exp(0)));
+					return new New(new NodeId(new ArrayTypeDescriptor(new BoolTypeDescriptor()),ctx.BOOLEAN().getText()),this.visitExp(ctx.exp(0)),ctx.BOOLEAN().getSymbol().getLine());
 				}
-				return new New(new NodeId(new BoolTypeDescriptor(),ctx.BOOLEAN().getText()),this.visitExp(ctx.exp(0)));
+				return new New(new NodeId(new BoolTypeDescriptor(),ctx.BOOLEAN().getText()),this.visitExp(ctx.exp(0)),ctx.BOOLEAN().getSymbol().getLine());
 			}
 			else if(ctx.IDENTIFIER()!=null && ctx.exp().isEmpty()) 
 			{
 				if(ctx.LBRACK()!=null) 
 				{
-					return new New(new NodeId(new ArrayTypeDescriptor(new IdTypeDescriptor(ctx.IDENTIFIER().getText())), ctx.IDENTIFIER().getText()),this.visitExp(ctx.exp(0)));
+					return new New(new NodeId(new ArrayTypeDescriptor(new IdTypeDescriptor(ctx.IDENTIFIER().getText())), ctx.IDENTIFIER().getText()),this.visitExp(ctx.exp(0)),ctx.IDENTIFIER().getSymbol().getLine());
 				}
-				return new New(new NodeId(new IdTypeDescriptor(ctx.IDENTIFIER().getText()),ctx.IDENTIFIER().getText()),this.visitExp(ctx.exp(0)));
+				return new New(new NodeId(new IdTypeDescriptor(ctx.IDENTIFIER().getText()),ctx.IDENTIFIER().getText()),this.visitExp(ctx.exp(0)),ctx.IDENTIFIER().getSymbol().getLine());
 			}
 			else 
 			{
-				return new New(new NodeId(new IdTypeDescriptor(ctx.IDENTIFIER().getText()),ctx.IDENTIFIER().getText()),null);
+				return new New(new NodeId(new IdTypeDescriptor(ctx.IDENTIFIER().getText()),ctx.IDENTIFIER().getText()),null,ctx.IDENTIFIER().getSymbol().getLine());
 			}
 		}
 		//ARRELEM accede ad un elelemnto di un array
 		else if(ctx.exp(1)!=null && ctx.LBRACK()!=null && ctx.NEW()==null) 
 		{
 			
-			return new ArrElem(this.visitExp(ctx.exp(0)),this.visitExp(ctx.exp(1)));
+			return new ArrElem(this.visitExp(ctx.exp(0)),this.visitExp(ctx.exp(1)),ctx.LBRACK().getSymbol().getLine());
 		}
 		
 		//LENGHT
 		else if(ctx.LENGTH()!=null) 
 		{
-			return new Lenght(this.visitExp(ctx.exp(0)));
+			return new Lenght(this.visitExp(ctx.exp(0)),ctx.LENGTH().getSymbol().getLine());
 		}
 		//PAREN
 		else if(ctx.exp()!=null && ctx.LPAREN()!=null && ctx.RPAREN()!=null && ctx.IDENTIFIER()==null) 
@@ -436,12 +436,12 @@ public class ASTGenerator extends miniJavaBaseVisitor<Object>{
 		//CAST
 		else if(ctx.exp()!=null && ctx.LPAREN()!=null && ctx.RPAREN()!=null && ctx.IDENTIFIER()!=null && ctx.DOT()==null) 
 		{
-			return new Cast(this.visitExp(ctx.exp(0)),new NodeId(new IdTypeDescriptor(ctx.IDENTIFIER().getText()), ctx.IDENTIFIER().getText()));
+			return new Cast(this.visitExp(ctx.exp(0)),new NodeId(new IdTypeDescriptor(ctx.IDENTIFIER().getText()), ctx.IDENTIFIER().getText()),ctx.IDENTIFIER().getSymbol().getLine());
 		}
 		//THIS
 		else if(ctx.THIS()!=null) 
 		{
-			return new This();
+			return new This(ctx.THIS().getSymbol().getLine());
 		}
 		//chiamata a funzione da oggetto exp DOT IDENTIFIER LPAREN exp* RPAREN
 		else if(ctx.IDENTIFIER()!= null && ctx.DOT()!=null) 
@@ -462,24 +462,24 @@ public class ASTGenerator extends miniJavaBaseVisitor<Object>{
 				}
 				
 			}
-			return new CallFuncObj(new NodeId(new IdTypeDescriptor(ctx.IDENTIFIER().getText()),ctx.IDENTIFIER().getText()), expr,list);
+			return new CallFuncObj(new NodeId(new IdTypeDescriptor(ctx.IDENTIFIER().getText()),ctx.IDENTIFIER().getText()), expr,list,ctx.IDENTIFIER().getSymbol().getLine());
 		}
 		//IDENTIFIER
 		else if(ctx.IDENTIFIER()!=null && ctx.exp()!=null && ctx.NEW()==null) 
 		{
-			return new Id(new NodeId(new IdTypeDescriptor(ctx.IDENTIFIER().getText()),ctx.IDENTIFIER().getText()));
+			return new Id(new NodeId(new IdTypeDescriptor(ctx.IDENTIFIER().getText()),ctx.IDENTIFIER().getText()),ctx.IDENTIFIER().getSymbol().getLine());
 		}
 		//DEC_BOOL
 		else if(ctx.BOOL_LITERAL()!=null || ctx.DECIMAL_LITERAL()!=null) 
 		{
 			if(ctx.BOOL_LITERAL()!=null) 
 			{
-				return new Boolean(ctx.BOOL_LITERAL().getText());
+				return new Boolean(ctx.BOOL_LITERAL().getText(),ctx.BOOL_LITERAL().getSymbol().getLine());
 				
 			}
 			else 
 			{
-				return new Decimal(ctx.DECIMAL_LITERAL().getText());
+				return new Decimal(ctx.DECIMAL_LITERAL().getText(),ctx.DECIMAL_LITERAL().getSymbol().getLine());
 			}
 		}
 		System.err.println("Errore");

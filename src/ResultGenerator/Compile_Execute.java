@@ -27,7 +27,7 @@ public class Compile_Execute {
                     System.err.println(str);
                 }
             } 
-           Process processoEsecuzione = Runtime.getRuntime().exec("java -cp " + "src" + sep + " TestText.CoeffectResult");
+           Process processoEsecuzione = Runtime.getRuntime().exec("java -cp " + "src" + sep + " ResultGenerator.CoeffectResult");
            exitCode=processoEsecuzione.waitFor();
             if (exitCode == 0) {
                 BufferedReader reader = new BufferedReader(new InputStreamReader(processoEsecuzione.getInputStream()));

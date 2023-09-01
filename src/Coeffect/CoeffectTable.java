@@ -89,7 +89,19 @@ public class CoeffectTable {
 		CoeffectTable retTab= new CoeffectTable();
 		for(Element el: this.coeffectTable) 
 		{
-			Coeffect coef=el.coef.op(cf,"mult");
+			Coeffect coef=cf.op(el.coef,"mult");
+			el.coef.setCoefExpr(coef.getCoefExpr());
+			el.coef.setCoefClass(coef.getCoefClass());
+			retTab.getCoeffectTable().add(el);
+		}
+		return retTab;
+	}
+	public CoeffectTable leq(Coeffect cf) 
+	{
+		CoeffectTable retTab= new CoeffectTable();
+		for(Element el: this.coeffectTable) 
+		{
+			Coeffect coef=cf.op(el.coef,"leq");
 			el.coef.setCoefExpr(coef.getCoefExpr());
 			el.coef.setCoefClass(coef.getCoefClass());
 			retTab.getCoeffectTable().add(el);

@@ -5,9 +5,10 @@ import ASTnodes.Exp.Exp;
 public class ARRAYASSIGN extends ASSIGN{
 	private Exp rexp;
 
-	public ARRAYASSIGN( Exp lexp, Exp rexp, String id) {
-		super(lexp,id);
+	public ARRAYASSIGN( Exp lexp, Exp rexp, String id, int line) {
+		super(lexp,id,line);
 		this.rexp = rexp;
+		
 	}
 
 

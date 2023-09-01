@@ -63,14 +63,13 @@ public class CoeffInference {
 		// setto alla coeffectTable della classe corrente e del metodo corrente l
 		// coeffectTable di ritorno dalla visita del return
 		CoeffectTable CT = new CoeffectTable();
-		CT.setCoeffectTable(this.visitExp(body.getRetExp()).getCoeffectTable());
+		CT.setCoeffectTable(this.visitExp(body.getRetExp()).getCoeffectTable());	
 		// visito ogni statement dall'ultimo al primo
 		ListIterator<Stm> listiter= body.getStms().listIterator(body.getStms().size());
 		while (listiter.hasPrevious()) {
 				
 				CT=this.visitStm( listiter.previous(), CT);
 		}
-		//System.out.println(CT.toString());
 		return CT;
 	}
 
@@ -153,13 +152,7 @@ public class CoeffInference {
 			TypeDescriptor td = att.getType();
 			if (td instanceof CoeffectTypeDescriptor) {
 				CoeffectTypeDescriptor cf = (CoeffectTypeDescriptor) td;
-				if (cf.getVarCoeff() != null) 
-				{
-					ct.addElement(((Id) exp).getId().getName(),new Coeffect("Nat.one()", cf.getVarCoeff().getClassCoeff()));
-				} else 
-				{
-					ct.addElement(((Id) exp).getId().getName(), new Coeffect("Nat.one()", "Nat"));
-				}
+					ct.addElement(((Id) exp).getId().getName(),new Coeffect("Nat.one()", "Nat" /*cf.getVarCoeff().getClassCoeff()*/));
 
 			} else {
 				ct.addElement("this", new Coeffect("Nat.one()", "Nat"));
@@ -186,11 +179,11 @@ public class CoeffInference {
 		}
 		// callfunc
 		else if (exp instanceof CallFuncObj) {
-			CoeffectTable cfThis = new CoeffectTable();
+			// coeffecttable dell'espressione sinistra
+			CoeffectTable cfThis = this.visitExp(((CallFuncObj) exp).getLexp());
 			CoeffectTable cfAcc = new CoeffectTable();
 			int i=0;
-			// coeffecttable dell'espressione sinistra
-			cfThis = this.visitExp(((CallFuncObj) exp).getLexp());
+			
 			//Prendo i formals del metodo
 			ArrayList<VarDecl> Formals= new ArrayList<VarDecl>();
 			for (NodeAST klass : ast) {
@@ -206,15 +199,15 @@ public class CoeffInference {
 			}
 			if(Formals.get(i).getId().getName().equals("this")) 
 			{
-				ArrayList<String> str = this.visitCoeffect(((CoeffectTypeDescriptor) Formals.get(i).getId().getType()).getVarCoeff());
-				cfAcc=cfThis.mult( new Coeffect(str.get(0), str.get(1)).supOne());
+				VarCoeff cft=((CoeffectTypeDescriptor)Formals.get(i).getId().getType()).getVarCoeff();
+				cfAcc=cfThis.mult( new Coeffect(cft.getExpCoeff().toString(),cft.getClassCoeff()).supOne());
 				i++;
 			}
 			for(int j=i;j<((CallFuncObj) exp).getRexp().size();j++) 
 			{
 				CoeffectTable cf = this.visitExp(((CallFuncObj) exp).getRexp().get(j));
-				ArrayList<String> str = this.visitCoeffect(((CoeffectTypeDescriptor) Formals.get(j).getId().getType()).getVarCoeff());
-				cfThis=cf.mult(new Coeffect(str.get(0), str.get(1)).supOne());
+				VarCoeff cft=((CoeffectTypeDescriptor)Formals.get(j).getId().getType()).getVarCoeff();
+				cfThis=cf.mult(new Coeffect(cft.getExpCoeff().toString(),cft.getClassCoeff()).supOne());
 				cfAcc=cfAcc.sum(cfThis);
 			}
 			return cfAcc;
@@ -247,7 +240,7 @@ public class CoeffInference {
 				return this.actualMeth.getLocal().lookup(nId);
 			}
 		}
-		return new Attribute(new ErrorTypeDescriptor());
+		return new Attribute(new ErrorTypeDescriptor(0));
 	}
 
 	private ArrayList<String> visitCoeffect(VarCoeff var) {
@@ -295,6 +288,6 @@ public class CoeffInference {
 			}
 		}
 
-		return new ErrorTypeDescriptor();
+		return new ErrorTypeDescriptor(0);
 	}
 }

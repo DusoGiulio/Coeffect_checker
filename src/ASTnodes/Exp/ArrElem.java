@@ -6,7 +6,8 @@ public class ArrElem extends Exp{
 	private Exp expEl;
 	private Exp ArrExp;
 
-	public ArrElem( Exp exp, Exp expEl) {
+	public ArrElem( Exp exp, Exp expEl,int line) {
+		super(line);
 		this.expEl=expEl;
 		this.setExp(exp);
 	}

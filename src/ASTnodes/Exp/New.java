@@ -8,7 +8,8 @@ public class New extends Exp{
 	private NodeId id;
 
 	
-	public New(NodeId id, Exp exp) {
+	public New(NodeId id, Exp exp, int line) {
+		super(line);
 		this.id=id;
 		this.exp = exp;
 	}

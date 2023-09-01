@@ -2,8 +2,9 @@ package ASTnodes.Exp;
 
 public abstract class Litteral extends Exp {
 	private String Value;
-	public Litteral(String Value) 
+	public Litteral(String Value,int line) 
 	{
+		super(line);
 		this.Value=Value;
 	}
 

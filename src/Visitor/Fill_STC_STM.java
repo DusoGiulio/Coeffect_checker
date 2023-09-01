@@ -7,6 +7,7 @@ import ASTnodes.Decl.*;
 import Attributes.Attribute;
 import Attributes.ClassAttribute;
 import Coeffect.Coef;
+import Exceptioin.SintatticException;
 import Exceptioin.TypeCheckingException;
 import SymbolTable.ClassSymbolTable;
 import SymbolTable.SymbolTable;
@@ -24,7 +25,7 @@ public class Fill_STC_STM  {
 	private ClassSymbolTable ClassST;
 	private ArrayList<String> extClass;
 	
-	public Fill_STC_STM(ArrayList<NodeAST> listClass) throws TypeCheckingException 
+	public Fill_STC_STM(ArrayList<NodeAST> listClass) throws TypeCheckingException, SintatticException 
 	{
 		this.ClassST=new ClassSymbolTable();
 		this.visitProgram(listClass);
@@ -35,7 +36,7 @@ public class Fill_STC_STM  {
 	}
 
 //Aggiungo alla symbol table globale le classi  e i metodi
-	private void visitProgram(ArrayList<NodeAST> listClass) throws TypeCheckingException 
+	private void visitProgram(ArrayList<NodeAST> listClass) throws TypeCheckingException, SintatticException 
 	{
 		NodeId id=null;
 		//per ogni classe la aggiungo alla Symboltable globale
@@ -74,6 +75,7 @@ public class Fill_STC_STM  {
 				else 
 				{
 					System.err.println("La classe <"+id.getName()+"> è stata dichiarata più volte");
+					throw new SintatticException(c.getLine());
 				}
 			}
 			else if(klass instanceof MainClass)
@@ -101,7 +103,7 @@ public class Fill_STC_STM  {
 					{//se la classe esiste nella symboltable delle classi
 						if(this.getClassST().lookup(c.getIdextends().getName())!=null) 
 						{//invoco la funzione che sarà ricorsiva passandogli il nome della classe e riempio this.extClass con le classi che estende la classe attuale
-							this.visitExtendClass(c.getIdextends().getName());															
+							this.visitExtendClass(c.getIdextends().getName(), c);															
 							//per ogni classe in extClass Agggiungo partendo dall'ultima classe aggiunta la sua symboltable alla precedente
 							int i= this.extClass.size()-1;
 							//Segno le classi estese dalla classe
@@ -116,18 +118,20 @@ public class Fill_STC_STM  {
 										{
 											if(Id.getType().getClass()!=MethTypeDescriptor.class) 
 											{
-												if(this.SSCheckExist(new FieldDecl(Id.getType(),Id), extSymTab, null)) 
+												if(this.SSCheckExist(new FieldDecl(Id.getType(),Id,0), extSymTab, null)) 
 												{
 													System.err.println("La variabile <"+Id.getName()+"> è già presente nella classe < "+ this.extClass.get(i-1) + "> quindi non può essere estesa");
 													flag=true;
+													throw new SintatticException(c.getLine());
 												}
 											}
 											else 
 											{
-												if(this.SSCheckExist(new FieldDecl(Id.getType(),Id), extSymTab,(this.getClassST().lookup(this.extClass.get(i-1)).getST()))) 
+												if(this.SSCheckExist(new FieldDecl(Id.getType(),Id,0), extSymTab,(this.getClassST().lookup(this.extClass.get(i-1)).getST()))) 
 												{
 													System.err.println("Il Metodo <"+Id.getName()+"> è già presente nella classe < "+ this.extClass.get(i-1) + "> quindi non può essere estesa");
 													flag=true;
+													throw new SintatticException(c.getLine());
 												}
 											}
 										}
@@ -145,6 +149,7 @@ public class Fill_STC_STM  {
 										}else 
 										{
 											System.err.println("Non è stato possibile estendere le classi a causa di nomi di variabili o metodi uguali");
+											throw new SintatticException(c.getLine());
 										}
 								}
 								else 
@@ -153,18 +158,20 @@ public class Fill_STC_STM  {
 										{
 											if(Id.getType().getClass()!=MethTypeDescriptor.class) 
 											{
-												if(this.SSCheckExist(new FieldDecl(Id.getType(),Id), extSymTab, null)) 
+												if(this.SSCheckExist(new FieldDecl(Id.getType(),Id,0), extSymTab, null)) 
 												{
 													System.err.println("La variabile <"+Id.getName()+"> è già presente nella classe < "+ c.getIdClass().getName() + "> quindi non può essere estesa");
 													flag=true;
+													throw new SintatticException(c.getLine());
 												}
 											}
 											else 
 											{
-												if(this.SSCheckExist(new FieldDecl(Id.getType(),Id), extSymTab,(this.getClassST().lookup(c.getIdClass().getName()).getST()))) 
+												if(this.SSCheckExist(new FieldDecl(Id.getType(),Id,0), extSymTab,(this.getClassST().lookup(c.getIdClass().getName()).getST()))) 
 												{
 													System.err.println("Il Metodo <"+Id.getName()+"> è già presente nella classe < "+ c.getIdClass().getName() + "> quindi non può essere estesa");
 													flag=true;
+													throw new SintatticException(c.getLine());
 												}
 											}
 										}
@@ -181,11 +188,11 @@ public class Fill_STC_STM  {
 										}else 
 										{
 											System.err.println("Non è stato possibile estendere le classi a causa di nomi di variabili o metodi uguali");
-											throw new TypeCheckingException();
+											throw new SintatticException(c.getLine());
 										}
 								}i--;}}}}}}}
 	
-	private void visitExtendClass(String extendClass) 
+	private void visitExtendClass(String extendClass, ClassDecl c) throws SintatticException 
 	{	//se extendClass è contenuta nella symboltable
 		if(this.getClassST().lookup(extendClass)!=null ) 
 		{//se la classe non è già presente 
@@ -197,21 +204,23 @@ public class Fill_STC_STM  {
 				//se la classe ne estende un'altra
 				if(this.getClassST().lookup(extendClass).getExtendClass()!=null) 
 				{// visito la classe che estende 
-					this.visitExtendClass(this.getClassST().lookup(extendClass).getExtendClass());
+					this.visitExtendClass(this.getClassST().lookup(extendClass).getExtendClass(),c);
 				}
 			}
 			else 
 			{
 				System.err.println("La classe <"+extendClass+"> si estende in modo ciclico");
+				throw new SintatticException(c.getLine());
 			}
 		}
 		else 
 		{
 			System.err.println("La classe <"+extendClass+"> non esiste");
+			throw new SintatticException(c.getLine());
 		}
 	}
 
-	public void visitClassDecl(ClassDecl ctx) 
+	public void visitClassDecl(ClassDecl ctx) throws SintatticException 
 	{
 		for(FieldDecl var :ctx.getVars()) 
 		{//per ogni variabile dichiarata nella classe aggiungo alla symbol della classe contenuta nella symboltable globale la variabile
@@ -223,12 +232,13 @@ public class Fill_STC_STM  {
 			else 
 			{
 				System.err.println("La variabile <"+var.getId().getName()+"> è già presente nella classe "+ ctx.getIdClass().getName());
+				throw new SintatticException(var.getLine());
 			}
 		}
 		//per ogni metoo
 		for(MethDecl met :ctx.getMets()) 
 		{//faccio partire una visita del metodo
-			if(!this.SSCheckExist(new FieldDecl(met.getType(),met.getId()), this.getClassST().lookup(ctx.getIdClass().getName()).getST(), null)) 
+			if(!this.SSCheckExist(new FieldDecl(met.getType(),met.getId(),0), this.getClassST().lookup(ctx.getIdClass().getName()).getST(), null)) 
 			{
 				//istanzio gli attributi di metodo
 				Attribute method= new Attribute (met.getType());
@@ -244,6 +254,7 @@ public class Fill_STC_STM  {
 			else 
 			{
 				System.err.println("Il metodo <"+met.getId().getName()+"> è già presente nella classe "+ ctx.getIdClass().getName());
+				throw new SintatticException(met.getLine());
 			}
 		}
 	}

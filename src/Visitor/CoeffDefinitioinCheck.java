@@ -11,7 +11,6 @@ import Exceptioin.TypeCheckingException;
 import TypeDescriptor.BoolTypeDescriptor;
 import TypeDescriptor.ClassTypeDescriptor;
 import TypeDescriptor.CoeffectTypeDescriptor;
-import TypeDescriptor.ErrorTypeDescriptor;
 import TypeDescriptor.IdTypeDescriptor;
 import TypeDescriptor.MethTypeDescriptor;
 import TypeDescriptor.TypeDescriptor;
@@ -21,42 +20,31 @@ public class CoeffDefinitioinCheck {
 	private ArrayList<NodeAST> ast;
 	//private ClassSymbolTable classST;
 
-	
 	public CoeffDefinitioinCheck(ArrayList<NodeAST> ast) throws TypeCheckingException {
-
 		this.ast=ast;
 		//centerrà tutti i metodi che devono essere contenuti in una COEFFECT class
-
-			if(this.visitProgram(this.ast)instanceof ErrorTypeDescriptor) 
-			{
-				throw new TypeCheckingException ();
-			}
+		this.visitProgram(this.ast);
 	}
 
 	 
-	private TypeDescriptor visitProgram(ArrayList<NodeAST> ast){
+	private void visitProgram(ArrayList<NodeAST> ast) throws TypeCheckingException{
 		for(NodeAST klass :  ast) 
 		{
 			if(klass instanceof ClassDecl) 
 			{
-				ClassDecl c= (ClassDecl) klass;
-				TypeDescriptor type=null;
+			ClassDecl c= (ClassDecl) klass;
 
-				if(((ClassTypeDescriptor)c.getType()).isCoeff()== Coef.COEFF ) 
-				{
-					type =this.visitClassCoeff(c);
-				}else if(((ClassTypeDescriptor)c.getType()).isCoeff()== Coef.AUXCOEF) 
-				{
-					type =this.visitClassSubCoeff(c);
-				}
-				if(type instanceof ErrorTypeDescriptor ) 
-				{
-					System.err.println("Nella Classe "+c.getIdClass().getName()+ " è presente un errore");
-					return  new ErrorTypeDescriptor();
-				}
+			if(((ClassTypeDescriptor)c.getType()).isCoeff()== Coef.COEFF ) 
+			{
+				this.visitClassCoeff(c);
+			}else if(((ClassTypeDescriptor)c.getType()).isCoeff()== Coef.AUXCOEF) 
+			{
+				this.visitClassSubCoeff(c);
+			}
+				
 			}
 		}
-		return null;
+
 	}
 
 
@@ -66,16 +54,12 @@ public class CoeffDefinitioinCheck {
 	}
 
 
-	private TypeDescriptor visitClassCoeff(ClassDecl c) {
+	private void visitClassCoeff(ClassDecl c) throws TypeCheckingException {
 
-		if(this.containsAllMethCoeff(c.getMets(), c))
-			{
-				return new BoolTypeDescriptor();
-			}
-		return new ErrorTypeDescriptor() ;
+			this.containsAllMethCoeff(c.getMets(), c);		
 	}
 	
-	private boolean containsAllMethCoeff(ArrayList<MethDecl> mets, ClassDecl c) {
+	private boolean containsAllMethCoeff(ArrayList<MethDecl> mets, ClassDecl c) throws TypeCheckingException {
 
 		ArrayList<Boolean> meths= new ArrayList<Boolean>();
 		for(MethDecl met:mets) 
@@ -93,7 +77,7 @@ public class CoeffDefinitioinCheck {
 						}
 						else 
 						{
-							meths.add(false);
+							throw new TypeCheckingException (met.getLine(),1);
 						}
 					}
 				}
@@ -109,7 +93,7 @@ public class CoeffDefinitioinCheck {
 						}
 						else 
 						{
-							meths.add(false);
+							throw new TypeCheckingException (met.getLine(),1);
 						}
 					}
 				}
@@ -121,7 +105,7 @@ public class CoeffDefinitioinCheck {
 					if(met.getFormals().size()==0) 
 					{	if(!((MethTypeDescriptor) met.getType()).isStatic()) 
 						{
-							meths.add(false);
+						throw new TypeCheckingException (met.getLine(),1);
 						}else 
 						{
 							meths.add(true);
@@ -130,7 +114,7 @@ public class CoeffDefinitioinCheck {
 					}
 					else 
 					{
-						meths.add(false);
+						throw new TypeCheckingException (met.getLine(),1);
 					}
 				}
 					
@@ -144,7 +128,7 @@ public class CoeffDefinitioinCheck {
 						{
 							if(!((MethTypeDescriptor) met.getType()).isStatic()) 
 							{
-								meths.add(false);
+								throw new TypeCheckingException (met.getLine(),1);
 							}else 
 							{
 								meths.add(true);
@@ -152,7 +136,7 @@ public class CoeffDefinitioinCheck {
 						}
 						else 
 						{
-							meths.add(false);
+							throw new TypeCheckingException (met.getLine(),1);
 						}
 					}
 				}
@@ -162,6 +146,6 @@ public class CoeffDefinitioinCheck {
 		{
 			return true;
 		}
-		return false;	
+		throw new TypeCheckingException (c.getLine(),1);
 	}
 }

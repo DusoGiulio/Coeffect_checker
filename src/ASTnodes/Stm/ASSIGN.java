@@ -7,7 +7,8 @@ public class ASSIGN extends Stm{
 	private String id;
 	private Exp exp;
 	
-	public ASSIGN(Exp exp, String id) {
+	public ASSIGN(Exp exp, String id, int line) {
+		super(line);
 		this.exp=exp;
 		this.id= id;
 

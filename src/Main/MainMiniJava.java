@@ -13,6 +13,7 @@ import ANTLR4.miniJavaLexer;
 import ANTLR4.miniJavaParser;
 import ANTLR4.miniJavaParser.ProgramContext;
 import ASTnodes.Class.NodeAST;
+import Exceptioin.SintatticException;
 import Exceptioin.TypeCheckingException;
 import ResultGenerator.Compile_Execute;
 import ResultGenerator.SurceCodeComposer;
@@ -20,7 +21,7 @@ import Visitor.ASTGenerator;
 import Visitor.CoeffInference;
 import Visitor.CoeffDefinitioinCheck;
 import Visitor.Fill_STC_STM;
-import Visitor.TypeCheking;
+import Visitor.TypeChecking;
 
 public class MainMiniJava {
 	public static void main(String[] args) throws IOException
@@ -28,7 +29,7 @@ public class MainMiniJava {
 		//creo un char stream, posso inserire sia un file di testo che una stringa	
 		FileInputStream inputStream=null;
 		String sep= FileSystems.getDefault().getSeparator();
-		String file="Affinity_exemple_1.txt";
+		String file="CoefInference2.txt";
 		String indirizzoCompleto="src"+sep+"TestText"+sep+file;
 		try 
 		{
@@ -63,14 +64,14 @@ public class MainMiniJava {
 				try 
 				{
 					System.out.println("\tINIZIO TYPE CHECKING\n//////////////////////////////////////");
-					 new TypeCheking(AST, firstvisit.getClassST());
+					 new TypeChecking(AST, firstvisit.getClassST());
 					System.out.println("\tTYPE CHECKING PASSATO\n");
 					System.out.println("\tINIZIO GESTIONE COEFFETTI\n//////////////////////////////////////");
 					new CoeffDefinitioinCheck(AST);
 					CoeffInference secondVisit=new CoeffInference(AST,firstvisit.getClassST());
 					secondVisit.visitProgram(AST);
 					System.out.println("\tFINE GESTIONE COEFFETTI\n");					
-			        String nomeCartella = "src"+sep+"TestText"; 
+			        String nomeCartella = "src"+sep+"ResultGenerator"; 
 			        String nomeFile = "CoeffectResult.java";
 			        String percorsoCompleto = nomeCartella + sep + nomeFile;
 			        SurceCodeComposer codiceSorgente=new SurceCodeComposer(AST,secondVisit.getClassST(),indirizzoCompleto);
@@ -79,9 +80,15 @@ public class MainMiniJava {
 			
 				} catch (TypeCheckingException e) 
 				{
+					e.printStackTrace();
 					System.err.println("//////////////////////////////////////\n\tTYPE CHECKING FALLITO");
 				}
-			} catch (TypeCheckingException e1) {}
+			} catch (TypeCheckingException e1) {
+				e1.printStackTrace();
+			} catch (SintatticException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 			}catch(NullPointerException e) 
 			{	
 				System.err.println("//////////////////////////////////////\n\tERRORE SINTATTICO");

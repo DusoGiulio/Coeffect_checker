@@ -7,7 +7,8 @@ public class UnaryOp extends Exp{
 	private TerminalNode op;
 	private Exp exp;
 	
-	public UnaryOp( TerminalNode op, Exp exp) {
+	public UnaryOp( TerminalNode op, Exp exp, int line) {
+		super(line);
 		this.op=op;
 		this.exp=exp;
 	}

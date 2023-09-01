@@ -5,7 +5,8 @@ import ASTnodes.Class.NodeId;
 
 public class CallFuncObj extends Exp{
 
-	public CallFuncObj(NodeId id, Exp lexp, ArrayList<Exp> list) {
+	public CallFuncObj(NodeId id, Exp lexp, ArrayList<Exp> list, int line) {
+		super(line);
 		this.setId(id);
 		this.lexp = lexp;
 		this.rexp = list;

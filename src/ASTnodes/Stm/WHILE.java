@@ -7,7 +7,8 @@ public class WHILE extends Stm {
 	private Exp exp;
 	private Stm stm1;
 	
-	public WHILE( Exp exp, Stm stm1) {
+	public WHILE( Exp exp, Stm stm1, int line) {
+		super(line);
 		this.exp = exp;
 		this.stm1 = stm1;
 	}

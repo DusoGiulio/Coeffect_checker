@@ -2,7 +2,9 @@ package ASTnodes.Exp;
 
 public class This extends Exp {
 	
-	public This() {}
+	public This(int line) {
+		super(line);
+	}
 	
 	@Override
 	public String toString() {

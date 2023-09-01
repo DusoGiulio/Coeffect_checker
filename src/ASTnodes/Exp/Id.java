@@ -6,8 +6,10 @@ public class Id extends Exp {
 
 	private NodeId id;
 	
-	public Id(NodeId id) {
+	public Id(NodeId id,int line) {
+		super(line);
 		this.id=id;
+		
 	}
 
 	public NodeId getId() {

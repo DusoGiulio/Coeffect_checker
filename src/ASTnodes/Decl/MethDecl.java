@@ -13,13 +13,15 @@ public class MethDecl extends Decl{
 	private  TypeDescriptor retType;
 	private NodeId id;
 	private Body body;
+	private int lastLine;
 	
-	public MethDecl(TypeDescriptor type, ArrayList<VarDecl> formals, TypeDescriptor retType, NodeId name, Body body) {
-		super(type);
+	public MethDecl(TypeDescriptor type, ArrayList<VarDecl> formals, TypeDescriptor retType, NodeId name, Body body,int line,int lastline) {
+		super(type,line);
 		this.formals = formals;
 		this.retType = retType;
 		this.id = name;
 		this.body = body;
+		this.lastLine=lastline;
 		
 	}
 
@@ -51,5 +53,13 @@ public class MethDecl extends Decl{
 		
 		acc=acc.concat("){\n"+this.body.toString()+"\n}");
 		return acc;
+	}
+
+	public int getLastLine() {
+		return lastLine;
+	}
+
+	public void setLastLine(int lastLine) {
+		this.lastLine = lastLine;
 	}
 }

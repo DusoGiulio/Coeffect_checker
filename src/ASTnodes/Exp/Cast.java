@@ -4,7 +4,8 @@ import ASTnodes.Class.NodeId;
 
 public class Cast extends Exp {
 
-	public Cast( Exp exp, NodeId id) {
+	public Cast( Exp exp, NodeId id,int line) {
+		super(line);
 		this.exp = exp;
 		this.id=id;
 	}

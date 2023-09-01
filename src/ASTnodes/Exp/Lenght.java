@@ -3,7 +3,8 @@ package ASTnodes.Exp;
 public class Lenght extends Exp{
 	private Exp exp;
 
-	public Lenght(Exp exp) {
+	public Lenght(Exp exp,int line) {
+		super(line);
 		this.exp=exp;
 	}
 

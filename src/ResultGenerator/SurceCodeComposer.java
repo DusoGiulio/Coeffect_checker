@@ -8,29 +8,27 @@ import ASTnodes.Decl.ClassDecl;
 import Attributes.Attribute;
 import Attributes.ClassAttribute;
 import Coeffect.Coef;
+import Coeffect.Coeffect;
 import Coeffect.CoeffectTable.Element;
+import Coeffect.VarCoeff;
 import SymbolTable.ClassSymbolTable;
 import TypeDescriptor.ClassTypeDescriptor;
 import TypeDescriptor.CoeffectTypeDescriptor;
 import TypeDescriptor.MethTypeDescriptor;
-import TypeDescriptor.TypeDescriptor;
 
 public class SurceCodeComposer {
 	
-	private String indirizzoFile;
 	private ClassSymbolTable classST;
 	private String codiceSorgente=" ";
 	private String destinazioneFile;
 	private ArrayList<NodeAST> AST;
 	
 	public SurceCodeComposer(ArrayList<NodeAST> AST, ClassSymbolTable classST, String indirizzoFile ) {
-		this.setIndirizzoFile(indirizzoFile);
 		this.setDestinazioneFile(destinazioneFile);
 		this.setClassST(classST);
-		String sourceFilePath = indirizzoFile;
-        this.codiceSorgente=this.codiceSorgente.concat("package TestText;");
+        this.codiceSorgente=this.codiceSorgente.concat("package ResultGenerator;");
         this.AST=AST;
-        for(NodeAST node: AST) 
+        for(NodeAST node: this.AST) 
         {
         	if(node instanceof ClassDecl) 
         	{
@@ -73,7 +71,8 @@ public class SurceCodeComposer {
 				//aggiungo a codice sorgente una sistem.out.println del nome del metodo
 				this.codiceSorgente=this.codiceSorgente.concat(this.syspl(id.getName(),"\tMetodo | "));
 				this.codiceSorgente=this.codiceSorgente.concat(this.syspl("----------------", "\t------------------------"));
-				this.codiceSorgente=this.codiceSorgente.concat(this.syspl(id.getName(),"\tVariabili | "));
+				this.codiceSorgente=this.codiceSorgente.concat(this.syspl("","\tVariabili | "));
+				this.codiceSorgente=this.codiceSorgente.concat(this.syspl("----------------", "\t------------------------"));
 				this.visitMethCoeffTable(cAttr.getST().lookup(id));
 				this.codiceSorgente=this.codiceSorgente.concat(this.syspl("----------------", "\t------------------------"));
 			}
@@ -84,20 +83,36 @@ public class SurceCodeComposer {
 	private void visitMethCoeffTable(Attribute attr) {
 		for(Element el: attr.getCoef().getCoeffectTable() )
 		{
-			String coeffect=this.findCoef(attr,el.id);
-			this.codiceSorgente=this.codiceSorgente.concat(this.sys("\t"+"\""+el.id+" |\""+"+"+ coeffect +".leq("+el.coef.getCoefExpr()+")", " "));
+			VarCoeff coeffect=this.findCoef(attr,el.id);
+			Coeffect cf =new Coeffect(coeffect.getExpCoeff().toString(),coeffect.getClassCoeff().toString());
+			if(el.coef.getCoefClass().toString().contains("Triv")) 
+			{
+				this.codiceSorgente=this.codiceSorgente.concat(this.sys("\"\t"+el.id+" |\""+"+"+"true"+"",""));
+				this.codiceSorgente=this.codiceSorgente.concat(this.syspl("----------------", "\t------------------------"));
+			}else if(cf.getClass().toString().contains("Triv")) 
+			{
+				this.codiceSorgente=this.codiceSorgente.concat(this.sys("\"\t"+el.id+" |\""+"+"+"false"+"",""));
+				this.codiceSorgente=this.codiceSorgente.concat(this.syspl("----------------", "\t------------------------"));
+			}else 
+			{
+				this.codiceSorgente=this.codiceSorgente.concat(this.sys("\"\t"+el.id+" |\""+"+"+el.coef.op(cf, "leq"), " "));
+				this.codiceSorgente=this.codiceSorgente.concat(this.sys("\""+"\tcoeffetto variabile: \""+"+"+"\""+cf.getCoefExpr()+"\"", ""));
+				this.codiceSorgente=this.codiceSorgente.concat(this.sys("\""+"\tcoeffetto inferito: \""+"+"+"("+el.coef+")"+".getClass().getSimpleName()", ""));
+				this.codiceSorgente=this.codiceSorgente.concat(this.syspl("----------------", "\t------------------------"));
+			}
+
 		}
 	}
 
-	private String findCoef(Attribute attr,String id) {
+	private VarCoeff findCoef(Attribute attr,String id) {
 		for (NodeId nId : attr.getFormals().getSymbolTable().keySet()) {
 			if (nId.getName().equals(id)) {
-				return "("+((CoeffectTypeDescriptor)attr.getFormals().lookup(nId).getType()).getVarCoeff().getExpCoeff()+")";
+				return ((CoeffectTypeDescriptor)attr.getFormals().lookup(nId).getType()).getVarCoeff();
 			}
 		}
 		for (NodeId nId : attr.getLocal().getSymbolTable().keySet()) {
 			if (nId.getName().equals(id)) {
-				return "("+((CoeffectTypeDescriptor)attr.getLocal().lookup(nId).getType()).getVarCoeff().getExpCoeff()+")";
+				return ((CoeffectTypeDescriptor)attr.getLocal().lookup(nId).getType()).getVarCoeff();
 			}
 		}
 		return null;
@@ -125,13 +140,6 @@ public class SurceCodeComposer {
 		this.classST = classST;
 	}
 
-	public String getIndirizzoFile() {
-		return indirizzoFile;
-	}
-
-	public void setIndirizzoFile(String file) {
-		this.indirizzoFile = file;
-	}
 
 	public String getCodiceSorgente() {
 		return codiceSorgente;

@@ -6,9 +6,12 @@ import TypeDescriptor.TypeDescriptor;
 public abstract  class Decl extends NodeAST {
 
 	private TypeDescriptor type;
+
+	private int line ;
 	
-	public Decl(TypeDescriptor type) {
+	public Decl(TypeDescriptor type, int line) {
 		this.setType(type);
+		this.line = line;
 	}
 
 	public TypeDescriptor getType() {
@@ -17,6 +20,14 @@ public abstract  class Decl extends NodeAST {
 
 	public void setType(TypeDescriptor type) {
 		this.type = type;
+	}
+	
+	public int getLine() {
+		return line;
+	}
+
+	public void setLine(int line) {
+		this.line = line;
 	}
 	
 }

@@ -6,7 +6,8 @@ public class Multi extends Stm{
 
 	private ArrayList<Stm> stms;
 
-	public Multi( ArrayList<Stm> stms) {
+	public Multi( ArrayList<Stm> stms,int line) {
+		super(line);
 		this.stms = stms;
 	}
 

@@ -10,8 +10,8 @@ public class ClassDecl  extends Decl{
 	private NodeId IdClass;
 	private NodeId Idextends;
 	
-	public ClassDecl(TypeDescriptor type, NodeId nome, NodeId parent,ArrayList<FieldDecl> vars,ArrayList<MethDecl> met) {
-		super(type);
+	public ClassDecl(TypeDescriptor type, NodeId nome, NodeId parent,ArrayList<FieldDecl> vars,ArrayList<MethDecl> met, int line) {
+		super(type,line);
 		this.vars = vars;
 		this.mets = met;
 		this.IdClass=nome;

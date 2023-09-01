@@ -8,8 +8,8 @@ public class MainClass extends Decl{
 	private NodeId idClass;
 	private Exp exp;
 	
-	public MainClass(TypeDescriptor type, NodeId name, Exp exp) {
-		super(type);
+	public MainClass(TypeDescriptor type, NodeId name, Exp exp,int line) {
+		super(type,line);
 		this.idClass=name;
 		this.exp=exp;
 	}

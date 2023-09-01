@@ -8,7 +8,8 @@ public class BinOp extends Exp {
 	private Exp lexp;
 	private Exp rexp;
 	
-	public BinOp(TerminalNode op, Exp lexp, Exp rexp) {
+	public BinOp(TerminalNode op, Exp lexp, Exp rexp,int line ) {
+		super(line);
 		this.op = op;
 		this.lexp = lexp;
 		this.rexp = rexp;

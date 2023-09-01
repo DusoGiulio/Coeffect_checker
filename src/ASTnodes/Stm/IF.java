@@ -4,7 +4,8 @@ import ASTnodes.Exp.Exp;
 
 public class IF extends Stm{
 
-	public IF( Exp exp2, Stm stmif, Stm stmelse) {
+	public IF( Exp exp2, Stm stmif, Stm stmelse,int line) {
+		super(line);
 		exp = exp2;
 		this.ifstm=stmif;
 		this.elsestm=stmelse;
