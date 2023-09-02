@@ -15,11 +15,19 @@ import TypeDescriptor.IdTypeDescriptor;
 import TypeDescriptor.MethTypeDescriptor;
 import TypeDescriptor.TypeDescriptor;
 
+/**
+ * Questa classe esegue il controllo delle definizioni dei coeffetti
+ */
 public class CoeffDefinitioinCheck {
 
 	private ArrayList<NodeAST> ast;
-	//private ClassSymbolTable classST;
 
+	 /**
+     * Crea un oggetto CoeffDefinitionCheck.
+     *
+     * @param ast L'AST (Abstract Syntax Tree) da analizzare.
+     * @throws TypeCheckingException Viene lanciata se si verificano errori durante il controllo dei coeffetti
+     */
 	public CoeffDefinitioinCheck(ArrayList<NodeAST> ast) throws TypeCheckingException {
 		this.ast=ast;
 		//centerrà tutti i metodi che devono essere contenuti in una COEFFECT class

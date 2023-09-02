@@ -23,7 +23,17 @@ import Visitor.CoeffDefinitioinCheck;
 import Visitor.Fill_STC_STM;
 import Visitor.TypeChecking;
 
+/**
+ * Classe principale per l'esecuzione del compilatore MiniJava.
+ */
 public class MainMiniJava {
+    
+    /**
+     * Metodo principale per l'esecuzione del compilatore MiniJava.
+     * 
+     * @param args Gli argomenti della riga di comando (non utilizzati).
+     * @throws IOException In caso di errori di input/output.
+     */
 	public static void main(String[] args) throws IOException
 	{
 		//creo un char stream, posso inserire sia un file di testo che una stringa	

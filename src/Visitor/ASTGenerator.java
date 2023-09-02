@@ -13,25 +13,41 @@ import Coeffect.Coef;
 import Coeffect.VarCoeff;
 import TypeDescriptor.*;
 
+/**
+ * Questa classe rappresenta un generatore di Abstract Syntax Tree (AST) per un linguaggio MiniJava.
+ * Estende la classe `miniJavaBaseVisitor<Object>` per implementare le operazioni di visita necessarie 
+ * per trasformare l'albero di parsing in un AST
+ */
+
 public class ASTGenerator extends miniJavaBaseVisitor<Object>{
 
 	private ArrayList<NodeAST> AST;
+	/**
+	 * Costruttore che inizializza un nuovo generatore di AST
+	 */
 	public ASTGenerator() 
 	{
 		this.setAST(new ArrayList<NodeAST>());
 	}
+	/**
+	 * Ottieni l'albero sintattico
+	 * @return ArrayList<NodeAST> che contiene l'albero sintattico
+	 */
 	public ArrayList<NodeAST> getAST() {
 		return AST;
 	}
-
+	/**
+	 * Imposta l'albero sintattico 
+	 * @return void
+	 */
 	public void setAST(ArrayList<NodeAST> aST) {
 		AST = aST;
 	}
-
-//////////////////////////////////////////////////Nodi AST//////////////////////////////////////////////////
-	
-	
-	//Ritorna l'AST composto dai vari array di ritorno dalla classe main a dalle altre classi del programma
+	/**
+	 * Override del metodo visitProgram ereditato dalla classe miniJavaBaseVisitor<Object>
+	 * @param ctx è il primo nodo dell'albero di parsing generato da ANTLR4 
+	 * @return ArrayList<NodeAST> che contiene l'albero sintattico
+	 */
     @Override
     public ArrayList<NodeAST> visitProgram(ProgramContext ctx) {
     	//aggiungo ad AST la classe MAIN
@@ -41,10 +57,12 @@ public class ASTGenerator extends miniJavaBaseVisitor<Object>{
         	this.getAST().add(this.visitClassDecl(c));
         }
         return this.getAST();
-	}
-    
-    
-//Gestionemain
+	}  
+    /**
+	 * Override del metodo visitMainClass ereditato dalla classe miniJavaBaseVisitor<Object>
+	 * @param ctx è il  nodo dell'albero di parsing generato da ANTLR4 che rappresenta la classe Main
+	 * @return MainClass che è una specializzazione di NodeAST
+	 */
     @Override
 	public MainClass visitMainClass(MainClassContext ctx) {
     	//Prendo il nome che identifica la classe
@@ -59,12 +77,13 @@ public class ASTGenerator extends miniJavaBaseVisitor<Object>{
 		//ritorno un nodo mainclass
 		return new MainClass(mainType,mainId,exp, ctx.IDENTIFIER(0).getSymbol().getLine());
 	}
-    
-    
-//Gestione Classe
+    /**
+	 * Override del metodo visitMainClass ereditato dalla classe miniJavaBaseVisitor<Object>
+	 * @param ctx è il  nodo dell'albero di parsing generato da ANTLR4 che rappresenta la classe Main
+	 * @return MainClass che è una specializzazione di <NodeAST>
+	 */
 	@Override
 	public ClassDecl visitClassDecl(ClassDeclContext ctx) {
-		//inizio gestioine extends class
 		String extendTxtClass= null;
 		NodeId extendId=null;
 		ClassTypeDescriptor extendTypeClass =null;
@@ -74,9 +93,6 @@ public class ASTGenerator extends miniJavaBaseVisitor<Object>{
 			extendTypeClass= new ClassTypeDescriptor (extendTxtClass );
 			extendId= new NodeId(extendTypeClass,extendTxtClass);
 		}
-		//fine gestione extends class
-		//---------------------------------------------------------------------------------------------//
-		//inizio gestione class
 		String classTxt = ctx.IDENTIFIER(0).getText();
 		ClassTypeDescriptor ClassType= new ClassTypeDescriptor(classTxt);
 		if(ctx.coefClass()!=null) 
@@ -84,32 +100,26 @@ public class ASTGenerator extends miniJavaBaseVisitor<Object>{
 			ClassType.setCoeff(this.visitCoefClass(ctx.coefClass()));
 		}
 		NodeId classId=new NodeId(ClassType,classTxt);
-
-		//fine gestione class
-		//---------------------------------------------------------------------------------------------//
-		//inizio gestione variabili
 		ArrayList<FieldDecl> listField =new ArrayList<FieldDecl>();
 		for(FieldDeclContext var: ctx.fieldDecl()) 
 		{
-			//aggiungo var alla lista delle variabili
 			listField.add(this.visitFieldDecl(var));
 		}
-		//fine gestione variabili
-		//---------------------------------------------------------------------------------------------//
-		//inizio gestione metodi
+
 		ArrayList<MethDecl> listMets =new ArrayList<MethDecl>();
 		for(MethodDeclContext met: ctx.methodDecl()) 
 		{
-			//aggiungo met alla lista dei metopdi
 			MethDecl m =this.visitMethodDecl(met);
 			listMets.add(m);
 		}
-		//fine  gestione metodi
-		//---------------------------------------------------------------------------------------------//
-		//ritorno nodo della classe
+
 		return new ClassDecl(ClassType,classId,extendId,listField,listMets,ctx.IDENTIFIER(0).getSymbol().getLine());
-		//---------------------------------------------------------------------------------------------//
 	}
+	/**
+	 * Override del metodo visitFieldDecl ereditato dalla classe miniJavaBaseVisitor<Object>
+	 * @param ctx è il  nodo dell'albero di parsing generato da ANTLR4 che rappresenta una dichiarazione di un campo nella classe
+	 * @return FieldDecl che è una specializzazione di <NodeAST>
+	 */
 	@Override
 	public FieldDecl visitFieldDecl (FieldDeclContext ctx) {
 		//---------------------------------------------------------------------------------------------//
@@ -125,7 +135,11 @@ public class ASTGenerator extends miniJavaBaseVisitor<Object>{
 	}
 	
 	
-//Gestione dichiarazione delle variabili
+	/**
+	 * Override del metodo visitFieldDecl ereditato dalla classe miniJavaBaseVisitor<Object>
+	 * @param ctx è il  nodo dell'albero di parsing generato da ANTLR4 che rappresenta una dichiarazione di un campo nella classe
+	 * @return FieldDecl che è una specializzazione di <NodeAST>
+	 */
 	@Override
 	public VarDecl visitVarDecl(VarDeclContext ctx) {
 		//---------------------------------------------------------------------------------------------//
@@ -140,7 +154,11 @@ public class ASTGenerator extends miniJavaBaseVisitor<Object>{
 		//---------------------------------------------------------------------------------------------//
 	}
 	
-	
+	/**
+	 * Override del metodo visitVarDecl ereditato dalla classe miniJavaBaseVisitor<Object>
+	 * @param ctx è il  nodo dell'albero di parsing generato da ANTLR4 che rappresenta una dichiarazione di una variabile
+	 * @return VarDecl che è una specializzazione di <NodeAST>
+	 */
 	@Override
 	public VarDecl  visitVarDeclp(VarDeclpContext ctx) {
 		//---------------------------------------------------------------------------------------------//
@@ -154,6 +172,11 @@ public class ASTGenerator extends miniJavaBaseVisitor<Object>{
 		return new VarDecl(type,varId,ctx.IDENTIFIER().getSymbol().getLine());
 		//---------------------------------------------------------------------------------------------//
 	}
+	/**
+	 * Override del metodo visitTypeCoeff ereditato dalla classe miniJavaBaseVisitor<Object>
+	 * @param ctx è il  nodo dell'albero di parsing generato da ANTLR4 che rappresenta una dichiarazione del tipo di una variabile  e del coeffetto di una variabile
+	 * @return CoeffectTypeDescriptor che è una specializzazione di <TypeDescriptor>
+	 */
 	@Override
 	public  CoeffectTypeDescriptor visitTypeCoeff(TypeCoeffContext ctx) 
 	{ 
@@ -165,6 +188,11 @@ public class ASTGenerator extends miniJavaBaseVisitor<Object>{
 		}
 		return new CoeffectTypeDescriptor(type, varCoeff);
 	}
+	/**
+	 * Override del metodo visitCoeffect ereditato dalla classe miniJavaBaseVisitor<Object>
+	 * @param ctx è il  nodo dell'albero di parsing generato da ANTLR4 che rappresenta la dichiarazione del coeffetto di una variabile
+	 * @return VarCoef 
+	 */
 	@Override
 	public VarCoeff visitCoeffect(CoeffectContext ctx) 
 	{
@@ -172,9 +200,11 @@ public class ASTGenerator extends miniJavaBaseVisitor<Object>{
 		Exp expCoeff= this.visitExp(ctx.exp());
 		return new VarCoeff(expCoeff, idClass);
 	}
-	
-	
-//Gestione metodi della classe	
+	/**
+	 * Override del metodo visitMethodDecl ereditato dalla classe miniJavaBaseVisitor<Object>
+	 * @param ctx è il  nodo dell'albero di parsing generato da ANTLR4 che rappresenta la dichiarazione di un metodo
+	 * @return MethDecl che è una specializzazione di <NodeAST>
+	 */
 	@Override
 	public MethDecl visitMethodDecl(MethodDeclContext ctx)  {
 		
@@ -240,6 +270,11 @@ public class ASTGenerator extends miniJavaBaseVisitor<Object>{
 		return new MethDecl(methType,listVar,methRetType,methId,body,ctx.IDENTIFIER(0).getSymbol().getLine(),ctx.RETURN().getSymbol().getLine());
 		//---------------------------------------------------------------------------------------------//
 	}
+	/**
+	 * Override del metodo visitType ereditato dalla classe miniJavaBaseVisitor<Object>
+	 * @param ctx è il  nodo dell'albero di parsing generato da ANTLR4 che rappresenta la dichiarazione del tipo di una variabile
+	 * @return <TypeDescriptor> 
+	 */
 	@Override
 	public TypeDescriptor visitType(TypeContext ctx) {
 		//---------------------------------------------------------------------------------------------//
@@ -266,7 +301,11 @@ public class ASTGenerator extends miniJavaBaseVisitor<Object>{
 		return type;
 		//---------------------------------------------------------------------------------------------//
 	}
-	
+	/**
+	 * Override del metodo visitStatement ereditato dalla classe miniJavaBaseVisitor<Object>
+	 * @param ctx è il  nodo dell'albero di parsing generato da ANTLR4 che rappresenta la dichiarazione di uno statement 
+	 * @return Stm che è una specializzazione di <NodeAST>
+	 */
 	@Override
 	public Stm visitStatement(StatementContext ctx) {
 		//---------------------------------------------------------------------------------------------//
@@ -323,7 +362,11 @@ public class ASTGenerator extends miniJavaBaseVisitor<Object>{
 		return stm;
 		//---------------------------------------------------------------------------------------------//
 	}
-	
+	/**
+	 * Override del metodo visitExp ereditato dalla classe miniJavaBaseVisitor<Object>
+	 * @param ctx è il  nodo dell'albero di parsing generato da ANTLR4 che rappresenta la dichiarazione di un espressione 
+	 * @return Exp che è una specializzazione di <NodeAST>
+	 */
 	@Override
 	public Exp visitExp(ExpContext ctx) {
 		//---------------------------------------------------------------------------------------------//
@@ -426,7 +469,7 @@ public class ASTGenerator extends miniJavaBaseVisitor<Object>{
 		//LENGHT
 		else if(ctx.LENGTH()!=null) 
 		{
-			return new Lenght(this.visitExp(ctx.exp(0)),ctx.LENGTH().getSymbol().getLine());
+			return new Length(this.visitExp(ctx.exp(0)),ctx.LENGTH().getSymbol().getLine());
 		}
 		//PAREN
 		else if(ctx.exp()!=null && ctx.LPAREN()!=null && ctx.RPAREN()!=null && ctx.IDENTIFIER()==null) 
@@ -486,6 +529,12 @@ public class ASTGenerator extends miniJavaBaseVisitor<Object>{
 		return null;
 		//---------------------------------------------------------------------------------------------//
 	}
+	/**
+	 * Override del metodo visitStatement ereditato dalla classe miniJavaBaseVisitor<Object>
+	 * @param ctx è il  nodo dell'albero di parsing generato da ANTLR4 che rappresenta il tipo di classe se coeffetto ,non coeffetto o aggiunta di un coeffetto
+	 * @return  Coef una classe enumerativa
+	 */
+	@Override
 	public Coef visitCoefClass(CoefClassContext ctx) 
 	{
 		if(ctx.COEFCLASS()!=null) 

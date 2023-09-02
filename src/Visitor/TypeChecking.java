@@ -14,6 +14,11 @@ import Exceptioin.TypeCheckingException;
 import SymbolTable.*;
 import TypeDescriptor.*;
 
+/**
+ * La classe TypeChecking è responsabile per l'esecuzione del controllo dei tipi sull'AST (Abstract Syntax Tree)
+ * che rappresenta un programma. Controlla la correttezza dei tipi del programma e genera una TypeCheckingException
+ * se vengono rilevati errori di tipo.
+ */
 public class TypeChecking {
 	private ArrayList<NodeAST> ast;
 	private ClassSymbolTable classST;
@@ -23,6 +28,13 @@ public class TypeChecking {
 	private boolean arrelem;
 	private boolean isStatic;
 
+	  /**
+     * Costruisce un nuovo oggetto TypeChecking per un dato AST e ClassSymbolTable.
+     *
+     * @param ast     L'ArrayList di nodi AST che rappresenta il programma.
+     * @param classST La ClassSymbolTable contenente informazioni sulle dichiarazioni di classi.
+     * @throws TypeCheckingException Se il controllo dei tipi incontra un errore nel programma.
+     */
 	public TypeChecking(ArrayList<NodeAST> ast, ClassSymbolTable classST)  throws TypeCheckingException {
 		this.ast=ast;
 		this.classST=classST;
@@ -31,7 +43,13 @@ public class TypeChecking {
 
 
 	}
-//se ogni classe non ritorna errore allora ritorno non lancio eccezioni, senno lancio un eccezione di tipo TypeCheckingexception
+    /**
+     * Visita l'intero programma rappresentato dall'AST ed esegue il controllo dei tipi.
+     *
+     * @param ast L'ArrayList di nodi AST che rappresenta il programma.
+     * @return Il TypeDescriptor risultante se il programma è corretto dal punto di vista dei tipi.
+     * @throws TypeCheckingException Se il controllo dei tipi incontra un errore nel programma.
+     */
 	private TypeDescriptor visitProgram(ArrayList<NodeAST> ast) throws TypeCheckingException{
 		for(NodeAST klass :  ast) 
 		{
@@ -399,10 +417,10 @@ public class TypeChecking {
 					return ((ArrayTypeDescriptor)TypeExp).getElement();
 				}
 				//Lenght
-			}else if(exp instanceof Lenght) 
+			}else if(exp instanceof Length) 
 			{//System.out.println("Lenght");
 			
-				if(this.visitExp(((Lenght)exp).getExp()).getClass() != ErrorTypeDescriptor.class && this.arrelem) 
+				if(this.visitExp(((Length)exp).getExp()).getClass() != ErrorTypeDescriptor.class && this.arrelem) 
 				{	
 					return new IntTypeDescriptor();
 				}
@@ -665,15 +683,18 @@ public class TypeChecking {
 			}
 			return false;
 		}
-		
+	    /**
+	     * Restituisce la ClassSymbolTable associata a questa istanza di controllo dei tipi.
+	     *
+	     * @return La ClassSymbolTable contenente le dichiarazioni di classi e le informazioni sui simboli.
+	     */	
 	public ClassSymbolTable getClassST() {
 		return classST;
 	}
-	public ClassDecl getActualClass() {
+	private ClassDecl getActualClass() {
 		return actualClass;
 	}
-	public void setActualClass(ClassDecl actualClass) {
+	private void setActualClass(ClassDecl actualClass) {
 		this.actualClass = actualClass;
 	}
 }
-//to string espressioni, analisi espressioni, togliere typedescriptor nell'ast'

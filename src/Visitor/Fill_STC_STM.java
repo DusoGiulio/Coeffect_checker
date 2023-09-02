@@ -13,29 +13,43 @@ import SymbolTable.ClassSymbolTable;
 import SymbolTable.SymbolTable;
 import TypeDescriptor.*;
 
-/*
- * Questa classe si occupa di aggiungere alla symboltable della classi chiamata ClassST la quale è composta come una HashTable<String,Attributes>, ogni riga conterrà il nome della classe
- * e i suo attributi i quali contengono classe estesa dalla classa , se esiste, e la symboltable della classe , la quale , composta come una HashTable<NodeId,SymbolTable>,
- *  conterrà a sua volta il NodeId e il typedescriptor di ogni metodo e varibile della classe corrento,durante il processo di iserimento della classe c'è un controllo sul nome della classe
- *  se il nome è già presente nella symboltable delle classi allora viene notificato un errore.
+/**
+ * Questa classe implementa un visitor per riempire le tabelle dei simboli
+ * delle classi e dei metodi in un programma MiniJava prendendo in ingresso un AST.
  */
-
 public class Fill_STC_STM  {
 	
 	private ClassSymbolTable ClassST;
 	private ArrayList<String> extClass;
 	
+	/**
+	 * Costruttore della classe Fill_STC_STM.
+	 *
+	 * @param listClass   Lista di classi AST nel programma.
+	 * @throws TypeCheckingException se si verificano eccezioni durante il controllo dei tipi.
+	 * @throws SintatticException   se si verificano eccezioni sintattiche.
+	 */
 	public Fill_STC_STM(ArrayList<NodeAST> listClass) throws TypeCheckingException, SintatticException 
 	{
 		this.ClassST=new ClassSymbolTable();
 		this.visitProgram(listClass);
 	}
-	
+	/**
+	 * Restituisce la tabella dei simboli delle classi generata.
+	 *
+	 * @return La tabella dei simboli delle classi.
+	 */
 	public ClassSymbolTable getClassST() {
 		return ClassST;
 	}
 
-//Aggiungo alla symbol table globale le classi  e i metodi
+	/**
+	 * Aggiunge le classi e i metodi alla tabella dei simboli globale.
+	 *
+	 * @param listClass Lista di classi AST nel programma.
+	 * @throws TypeCheckingException se si verificano eccezioni durante il controllo dei tipi.
+	 * @throws SintatticException   se si verificano eccezioni sintattiche.
+	 */
 	private void visitProgram(ArrayList<NodeAST> listClass) throws TypeCheckingException, SintatticException 
 	{
 		NodeId id=null;
@@ -192,6 +206,8 @@ public class Fill_STC_STM  {
 										}
 								}i--;}}}}}}}
 	
+	
+	
 	private void visitExtendClass(String extendClass, ClassDecl c) throws SintatticException 
 	{	//se extendClass è contenuta nella symboltable
 		if(this.getClassST().lookup(extendClass)!=null ) 
@@ -220,6 +236,12 @@ public class Fill_STC_STM  {
 		}
 	}
 
+	/**
+	 * Visita una classe dichiarata.
+	 *
+	 * @param ctx La classe dichiarata da visitare.
+	 * @throws SintatticException se si verificano eccezioni sintattiche.
+	 */
 	public void visitClassDecl(ClassDecl ctx) throws SintatticException 
 	{
 		for(FieldDecl var :ctx.getVars()) 
@@ -258,7 +280,12 @@ public class Fill_STC_STM  {
 			}
 		}
 	}
-	
+	/**
+	 * Visita un metodo dichiarato.
+	 *
+	 * @param ctx Il metodo dichiarato da visitare.
+	 * @return La Symboltable dei formals del metodo.
+	 */
 	public SymbolTable visitMethodDecl(MethDecl ctx)
 	{
 		SymbolTable st= new SymbolTable();
@@ -269,7 +296,15 @@ public class Fill_STC_STM  {
 		//ritorno la symboltable dei formals del metodo
 		return st;
 	}
-	//ritorno true se la variabile esiste, si occupa di controllare se in una datat classe il nome di una data variabile già esiste
+	/**
+	 * Verifica se una variabile esiste, controllando se in una data classe il nome di
+	 * una data variabile già esiste.
+	 *
+	 * @param var      La variabile da cercare.
+	 * @param extendor La Symboltable da esaminare.
+	 * @param extended La Symboltable estesa.
+	 * @return true se la variabile esiste, false altrimenti.
+	 */
 	private  boolean SSCheckExist(FieldDecl var, SymbolTable extendor, SymbolTable extended) 
 	{      //per ogni NodeId presente nella symboltable extendor
 		for(NodeId p:extendor.getSymbolTable().keySet()) 

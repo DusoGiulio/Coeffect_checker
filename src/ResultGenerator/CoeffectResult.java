@@ -1,45 +1,45 @@
  package ResultGenerator;
  class Affinity {
  
-public  Affinity sup(  Affinity x ){
+public  Affinity sup( Affinity x ){
 Affinity result;
-if (this.leq(x)){
+if (this.leq(x)) {
 result=x;
-}else{
+} else {
 result=this;
 }
  return result;
 }
 
-public  boolean leq(  Affinity x ){
+public  boolean leq( Affinity x ){
 
  return true;
 }
 
-public  Affinity sum(  Affinity x ){
+public  Affinity sum( Affinity x ){
 
  return x;
 }
 
-public  Affinity mult(  Affinity x ){
+public  Affinity mult( Affinity x ){
 
  return this;
 }
 
-public static Affinity zero( ){
+public static Affinity zero(){
 
  return new ZeroA();
 }
 
-public static Affinity one( ){
+public static Affinity one(){
 
  return new One();
 }
 
-public static Affinity fromNat(  Nat n ){
+public static Affinity fromNat( Nat n ){
 Affinity result;
 Succ succ;
-if ((n instanceof Succ)){
+if ((n instanceof Succ)) {
 
 succ=((Succ)n);
 
@@ -47,7 +47,7 @@ result=Affinity.fromNat(succ.getPred());
 
 result=result.sum(Affinity.one());
 
-}else{
+} else {
 result=Affinity.zero();
 }
  return result;
@@ -59,22 +59,22 @@ result=Affinity.zero();
 }
  class One extends Affinity { 
 
-public  boolean leq(  Affinity x ){
+public  boolean leq( Affinity x ){
 
  return !(x instanceof ZeroA);
 }
 
-public  Affinity sum(  Affinity x ){
+public  Affinity sum( Affinity x ){
 Affinity result;
-if ((x instanceof ZeroA)){
+if ((x instanceof ZeroA)) {
 result=this;
-}else{
+} else {
 result=new Omega();
 }
  return result;
 }
 
-public  Affinity mult(  Affinity x ){
+public  Affinity mult( Affinity x ){
 
  return x;
 }
@@ -82,21 +82,21 @@ public  Affinity mult(  Affinity x ){
 }
  class Omega extends Affinity { 
 
-public  boolean leq(  Affinity x ){
+public  boolean leq( Affinity x ){
 
  return (x instanceof Omega);
 }
 
-public  Affinity sum(  Affinity x ){
+public  Affinity sum( Affinity x ){
 
  return this;
 }
 
-public  Affinity mult(  Affinity x ){
+public  Affinity mult( Affinity x ){
 Affinity result;
-if ((x instanceof ZeroA)){
+if ((x instanceof ZeroA)) {
 result=x;
-}else{
+} else {
 result=this;
 }
  return result;
@@ -105,18 +105,18 @@ result=this;
 }
  class Nat {
  
-public  boolean leq(  Nat x ){
+public  boolean leq( Nat x ){
 
  return true;
 }
 
-public  Nat sup(  Nat x ){
+public  Nat sup( Nat x ){
 Nat result;
-if (this.leq(x)){
+if (this.leq(x)) {
 
 result=x;
 
-}else{
+} else {
 
 result=this;
 
@@ -124,28 +124,28 @@ result=this;
  return result;
 }
 
-public  Nat sum(  Nat x ){
+public  Nat sum( Nat x ){
 
  return x;
 }
 
-public  Nat mult(  Nat x ){
+public  Nat mult( Nat x ){
 
  return this;
 }
 
-public static Nat zero( ){
+public static Nat zero(){
 
  return new Zero();
 }
 
-public static Nat one( ){
+public static Nat one(){
 Nat result;
 result=new Succ().setPred(Nat.zero());
  return result;
 }
 
-public static Nat fromNat(  Nat n ){
+public static Nat fromNat( Nat n ){
 
  return n;
 }
@@ -155,37 +155,37 @@ public static Nat fromNat(  Nat n ){
 
 Nat pred;
 
-public  Nat setPred(  Nat p ){
+public  Nat setPred( Nat p ){
 pred=p;
  return this;
 }
 
-public  Nat getPred( ){
+public  Nat getPred(){
 
  return pred;
 }
 
-public  boolean leq(  Nat x ){
+public  boolean leq( Nat x ){
 boolean result;
-if ((x instanceof Zero)){
+if ((x instanceof Zero)) {
 result=false;
-}else{
+} else {
 result=pred.leq(((Succ)x).getPred());
 }
  return result;
 }
 
-public  Nat sum(  Nat x ){
+public  Nat sum( Nat x ){
 Nat result;
 result=new Succ().setPred(pred.sum(x));
  return result;
 }
 
-public  Nat mult(  Nat x ){
+public  Nat mult( Nat x ){
 Nat result;
-if ((x instanceof Zero)){
+if ((x instanceof Zero)) {
 result=x;
-}else{
+} else {
 result=pred.mult(x).sum(x);
 }
  return result;
@@ -194,37 +194,37 @@ result=pred.mult(x).sum(x);
 }
  class Triv {
  
-public  boolean leq(  Triv t ){
+public  boolean leq( Triv t ){
 
  return true;
 }
 
-public  Triv sup(  Triv t ){
+public  Triv sup( Triv t ){
 
  return this;
 }
 
-public  Triv sum(  Triv t ){
+public  Triv sum( Triv t ){
 
  return this;
 }
 
-public  Triv mult(  Triv t ){
+public  Triv mult( Triv t ){
 
  return this;
 }
 
-public static Triv zero( ){
+public static Triv zero(){
 
  return new Triv();
 }
 
-public static Triv one( ){
+public static Triv one(){
 
  return new Triv();
 }
 
-public static Triv fromNat(  Nat n ){
+public static Triv fromNat( Nat n ){
 
  return new Triv();
 }
@@ -246,15 +246,15 @@ public static Triv fromNat(  Nat n ){
 		System.out.println("	----------------------------------------");
 		System.out.println("	Variabili | ");
 		System.out.println("	----------------------------------------");
-		System.out.println( "	a3 |"+((Affinity.fromNat(Nat.one())).mult(Affinity.one().sup(Affinity.fromNat(Nat.one())).mult(Affinity.zero().sup(Affinity.fromNat(Nat.one())).mult(Affinity.fromNat(Nat.one())))).mult(Affinity.fromNat(Nat.one())).leq(Affinity.one())));
+		System.out.println( "a3 |"+((Affinity.fromNat(Nat.one())).mult(Affinity.one().sup(Affinity.fromNat(Nat.one())).mult(Affinity.zero().sup(Affinity.fromNat(Nat.one())).mult(Affinity.fromNat(Nat.one())))).mult(Affinity.fromNat(Nat.one())).leq(Affinity.one())));
 		System.out.println("	coeffetto variabile: "+"Affinity.one()");
 		System.out.println("	coeffetto inferito: "+(((Affinity.fromNat(Nat.one())).mult(Affinity.one().sup(Affinity.fromNat(Nat.one())).mult(Affinity.zero().sup(Affinity.fromNat(Nat.one())).mult(Affinity.fromNat(Nat.one())))).mult(Affinity.fromNat(Nat.one())))).getClass().getSimpleName());
 		System.out.println("	----------------------------------------");
-		System.out.println( "	a1 |"+(new Omega().sup(Affinity.fromNat(Nat.one())).mult(Affinity.fromNat(Nat.one())).sum(Affinity.fromNat(Nat.one())).leq(new Omega())));
+		System.out.println( "a1 |"+(new Omega().sup(Affinity.fromNat(Nat.one())).mult(Affinity.fromNat(Nat.one())).sum(Affinity.fromNat(Nat.one())).leq(new Omega())));
 		System.out.println("	coeffetto variabile: "+"new Omega()");
 		System.out.println("	coeffetto inferito: "+((new Omega().sup(Affinity.fromNat(Nat.one())).mult(Affinity.fromNat(Nat.one())).sum(Affinity.fromNat(Nat.one())))).getClass().getSimpleName());
 		System.out.println("	----------------------------------------");
-		System.out.println( "	a2 |"+((Affinity.fromNat(Nat.one())).mult(Affinity.one().sup(Affinity.fromNat(Nat.one())).mult(Affinity.zero().sup(Affinity.fromNat(Nat.one())).mult(Affinity.fromNat(Nat.one())))).leq(Affinity.one())));
+		System.out.println( "a2 |"+((Affinity.fromNat(Nat.one())).mult(Affinity.one().sup(Affinity.fromNat(Nat.one())).mult(Affinity.zero().sup(Affinity.fromNat(Nat.one())).mult(Affinity.fromNat(Nat.one())))).leq(Affinity.one())));
 		System.out.println("	coeffetto variabile: "+"Affinity.one()");
 		System.out.println("	coeffetto inferito: "+(((Affinity.fromNat(Nat.one())).mult(Affinity.one().sup(Affinity.fromNat(Nat.one())).mult(Affinity.zero().sup(Affinity.fromNat(Nat.one())).mult(Affinity.fromNat(Nat.one())))))).getClass().getSimpleName());
 		System.out.println("	----------------------------------------");
@@ -263,11 +263,11 @@ public static Triv fromNat(  Nat n ){
 		System.out.println("	----------------------------------------");
 		System.out.println("	Variabili | ");
 		System.out.println("	----------------------------------------");
-		System.out.println( "	p |"+(Affinity.one().sup(Affinity.fromNat(Nat.one())).mult(Affinity.fromNat(Nat.one())).leq(Affinity.one())));
+		System.out.println( "p |"+(Affinity.one().sup(Affinity.fromNat(Nat.one())).mult(Affinity.fromNat(Nat.one())).leq(Affinity.one())));
 		System.out.println("	coeffetto variabile: "+"Affinity.one()");
 		System.out.println("	coeffetto inferito: "+((Affinity.one().sup(Affinity.fromNat(Nat.one())).mult(Affinity.fromNat(Nat.one())))).getClass().getSimpleName());
 		System.out.println("	----------------------------------------");
-		System.out.println( "	this |"+(Affinity.one().sup(Affinity.fromNat(Nat.one())).mult(Affinity.fromNat(Nat.one())).leq(new Omega())));
+		System.out.println( "this |"+(Affinity.one().sup(Affinity.fromNat(Nat.one())).mult(Affinity.fromNat(Nat.one())).leq(new Omega())));
 		System.out.println("	coeffetto variabile: "+"new Omega()");
 		System.out.println("	coeffetto inferito: "+((Affinity.one().sup(Affinity.fromNat(Nat.one())).mult(Affinity.fromNat(Nat.one())))).getClass().getSimpleName());
 		System.out.println("	----------------------------------------");
@@ -276,7 +276,7 @@ public static Triv fromNat(  Nat n ){
 		System.out.println("	----------------------------------------");
 		System.out.println("	Variabili | ");
 		System.out.println("	----------------------------------------");
-		System.out.println( "	this |"+((Affinity.fromNat(Nat.one())).leq(Affinity.one())));
+		System.out.println( "this |"+((Affinity.fromNat(Nat.one())).leq(Affinity.one())));
 		System.out.println("	coeffetto variabile: "+"Affinity.one()");
 		System.out.println("	coeffetto inferito: "+((Nat.one())).getClass().getSimpleName());
 		System.out.println("	----------------------------------------");
@@ -296,9 +296,9 @@ public static Triv fromNat(  Nat n ){
 		System.out.println("	----------------------------------------");
 		System.out.println("	Variabili | ");
 		System.out.println("	----------------------------------------");
-		System.out.println("	mySnd |"+true);
+		System.out.println("mySnd |"+true);
 		System.out.println("	----------------------------------------");
-		System.out.println( "	this |"+((Affinity.fromNat(Nat.one())).leq(Affinity.one())));
+		System.out.println( "this |"+((Affinity.fromNat(Nat.one())).leq(Affinity.one())));
 		System.out.println("	coeffetto variabile: "+"Affinity.one()");
 		System.out.println("	coeffetto inferito: "+((Nat.one())).getClass().getSimpleName());
 		System.out.println("	----------------------------------------");

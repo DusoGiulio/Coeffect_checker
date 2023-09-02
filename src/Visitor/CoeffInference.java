@@ -14,6 +14,9 @@ import Exceptioin.TypeCheckingException;
 import SymbolTable.ClassSymbolTable;
 import TypeDescriptor.*;
 
+/**
+ * Questa classe esegue l'inferenza dei coeffetti
+ */
 public class CoeffInference {
 
 	private ArrayList<NodeAST> ast;
@@ -21,11 +24,25 @@ public class CoeffInference {
 	private String ActualClass;   
 	private Attribute actualMeth;  
 
+	/**
+     * Crea un oggetto CoeffInference.
+     *
+     * @param ast     L'AST (Abstract Syntax Tree) da analizzare.
+     * @param classST La tabella dei simboli delle classi.
+     * @throws TypeCheckingException Viene lanciata se si verificano errori durante il controllo dei coeffetti.
+     */
 	public CoeffInference(ArrayList<NodeAST> ast, ClassSymbolTable classST) throws TypeCheckingException {
 		this.ast = ast;
 		this.classST = classST;
 	}
 
+	   /**
+     * Esegue l'inferenza dei coeffetti per il programma.
+     *
+     * @param ast L'AST (Abstract Syntax Tree) da analizzare.
+     * @return La tabella dei simboli delle classi aggiornata con i coeffetti inferiti.
+     * @throws TypeCheckingException Viene lanciata se si verificano errori durante il controllo dei coeffetti.
+     */
 	public ClassSymbolTable visitProgram(ArrayList<NodeAST> ast) throws TypeCheckingException {
 		for (NodeAST klass : ast) {
 			if (klass instanceof ClassDecl) {
@@ -170,8 +187,8 @@ public class CoeffInference {
 			return this.visitExp(((ArrElem) exp).getExp());
 		}
 		// Lenght
-		else if (exp instanceof Lenght) {
-			return this.visitExp(((Lenght) exp).getExp());
+		else if (exp instanceof Length) {
+			return this.visitExp(((Length) exp).getExp());
 		}
 		// CAST
 		else if (exp instanceof Cast) {
@@ -251,7 +268,11 @@ public class CoeffInference {
 	}
 
 
-
+    /**
+     * Restituisce la tabella dei simboli delle classi.
+     *
+     * @return La tabella dei simboli delle classi.
+     */
 	public ClassSymbolTable getClassST() {
 		return classST;
 	}
