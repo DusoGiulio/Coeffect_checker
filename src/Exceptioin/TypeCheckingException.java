@@ -23,7 +23,7 @@ public class TypeCheckingException extends Exception {
      * @param type Il tipo di errore specifico 
      */
     public TypeCheckingException(int line, int type) {
-        super("Errore dichiarazione coefficienti alla riga -> " + line); // Imposta il messaggio di errore personalizzato
+        super("Errore dichiarazione coeffetti alla riga -> " + line); // Imposta il messaggio di errore personalizzato
     }
 }
 

@@ -168,7 +168,7 @@ public class CoeffInference {
 			Attribute att = this.findAttr(((Id) exp).getId().getName());
 			TypeDescriptor td = att.getType();
 			if (td instanceof CoeffectTypeDescriptor) {
-				CoeffectTypeDescriptor cf = (CoeffectTypeDescriptor) td;
+				//CoeffectTypeDescriptor cf = (CoeffectTypeDescriptor) td;
 					ct.addElement(((Id) exp).getId().getName(),new Coeffect("Nat.one()", "Nat" /*cf.getVarCoeff().getClassCoeff()*/));
 
 			} else {
@@ -259,15 +259,6 @@ public class CoeffInference {
 		}
 		return new Attribute(new ErrorTypeDescriptor(0));
 	}
-
-	private ArrayList<String> visitCoeffect(VarCoeff var) {
-		ArrayList<String> str = new ArrayList<String>();
-		str.add(var.getExpCoeff().toString());
-		str.add(var.getClassCoeff());
-		return str;
-	}
-
-
     /**
      * Restituisce la tabella dei simboli delle classi.
      *

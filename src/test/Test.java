@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CommonTokenStream;
-import org.junit.jupiter.api.*;
 
 import ANTLR4.miniJavaLexer;
 import ANTLR4.miniJavaParser;
@@ -28,21 +27,6 @@ import Visitor.TypeChecking;
 
 class Test {
 
-	@BeforeAll
-	static void setUpBeforeClass() throws Exception {
-	}
-
-	@AfterAll
-	static void tearDownAfterClass() throws Exception {
-	}
-
-	@BeforeEach
-	void setUp() throws Exception {
-	}
-
-	@AfterEach
-	void tearDown() throws Exception {
-	}
 	//Testa il metodo op, che eseguira nello stesso modo sum e sup
 	@org.junit.jupiter.api.Test
 	void Coeffect_sum() {
@@ -161,7 +145,7 @@ class Test {
 		firstvisit = new Fill_STC_STM(AST);
 		TypeCheckingException exception = assertThrows(TypeCheckingException.class, () -> {
 	     new TypeChecking(AST, firstvisit.getClassST());});
-		assertEquals("Errore di tipo alla riga ->15", exception.getMessage());
+		assertEquals("Errore di tipo alla riga -> 15", exception.getMessage());
 	}
 	
 	@org.junit.jupiter.api.Test
@@ -195,7 +179,7 @@ class Test {
 		firstvisit = new Fill_STC_STM(AST);
 		TypeCheckingException exception = assertThrows(TypeCheckingException.class, () -> {
 	     new TypeChecking(AST, firstvisit.getClassST());});
-		assertEquals("Errore di tipo alla riga ->22", exception.getMessage());
+		assertEquals("Errore di tipo alla riga -> 22", exception.getMessage());
 	}
 	
 	@org.junit.jupiter.api.Test
@@ -229,7 +213,7 @@ class Test {
 		firstvisit = new Fill_STC_STM(AST);
 		TypeCheckingException exception = assertThrows(TypeCheckingException.class, () -> {
 	     new TypeChecking(AST, firstvisit.getClassST());});
-		assertEquals("Errore di tipo alla riga ->16", exception.getMessage());
+		assertEquals("Errore di tipo alla riga -> 16", exception.getMessage());
 	}
 	
 	@org.junit.jupiter.api.Test
@@ -263,7 +247,7 @@ class Test {
 		firstvisit = new Fill_STC_STM(AST);
 		TypeCheckingException exception = assertThrows(TypeCheckingException.class, () -> {
 	     new TypeChecking(AST, firstvisit.getClassST());});
-		assertEquals("Errore di tipo alla riga ->25", exception.getMessage());
+		assertEquals("Errore di tipo alla riga -> 25", exception.getMessage());
 	}
 	
 	@org.junit.jupiter.api.Test
@@ -297,7 +281,7 @@ class Test {
 		firstvisit = new Fill_STC_STM(AST);
 		TypeCheckingException exception = assertThrows(TypeCheckingException.class, () -> {
 	     new TypeChecking(AST, firstvisit.getClassST());});
-		assertEquals("Errore di tipo alla riga ->14", exception.getMessage());
+		assertEquals("Errore di tipo alla riga -> 14", exception.getMessage());
 	}
 	
 	
@@ -333,7 +317,7 @@ class Test {
 		firstvisit = new Fill_STC_STM(AST);
 		TypeCheckingException exception = assertThrows(TypeCheckingException.class, () -> {
 	     new TypeChecking(AST, firstvisit.getClassST());});
-		assertEquals("Errore di tipo alla riga ->21", exception.getMessage());
+		assertEquals("Errore di tipo alla riga -> 21", exception.getMessage());
 		
 	}
 	
@@ -366,7 +350,7 @@ class Test {
 		ArrayList<NodeAST> AST=visitor.visitProgram(p);;
 		SintatticException exception = assertThrows(SintatticException.class, () -> {
 			new Fill_STC_STM(AST);});
-		assertEquals("Errore  alla riga ->6", exception.getMessage());
+		assertEquals("Errore sintattico alla riga -> 6", exception.getMessage());
 		
 	}
 	
@@ -402,7 +386,7 @@ class Test {
 		firstvisit = new Fill_STC_STM(AST);
 		TypeCheckingException exception = assertThrows(TypeCheckingException.class, () -> {
 	     new TypeChecking(AST, firstvisit.getClassST());});
-		assertEquals("Errore di tipo alla riga ->12", exception.getMessage());
+		assertEquals("Errore di tipo alla riga -> 12", exception.getMessage());
 		
 	}
 	
@@ -437,7 +421,7 @@ class Test {
 		firstvisit = new Fill_STC_STM(AST);
 		TypeCheckingException exception = assertThrows(TypeCheckingException.class, () -> {
 	     new TypeChecking(AST, firstvisit.getClassST());});
-		assertEquals("Errore di tipo alla riga ->13", exception.getMessage());
+		assertEquals("Errore di tipo alla riga -> 13", exception.getMessage());
 		
 	}
 	
@@ -472,7 +456,7 @@ class Test {
 		firstvisit = new Fill_STC_STM(AST);
 		TypeCheckingException exception = assertThrows(TypeCheckingException.class, () -> {
 	     new TypeChecking(AST, firstvisit.getClassST());});
-		assertEquals("Errore di tipo alla riga ->90", exception.getMessage());
+		assertEquals("Errore di tipo alla riga -> 90", exception.getMessage());
 		
 	}
 	
@@ -507,7 +491,7 @@ class Test {
 		 new TypeChecking(AST, firstvisit.getClassST());
 		TypeCheckingException exception = assertThrows(TypeCheckingException.class, () -> {
 			new CoeffDefinitioinCheck(AST);;});
-		assertEquals("Errore dichiarazione coeffetti alla riga ->84", exception.getMessage());
+		assertEquals("Errore dichiarazione coeffetti alla riga -> 84", exception.getMessage());
 		
 	}
 	
@@ -540,7 +524,7 @@ class Test {
 		ArrayList<NodeAST> AST=visitor.visitProgram(p);
 		TypeCheckingException exception = assertThrows(TypeCheckingException.class, () -> {
 			new CoeffDefinitioinCheck(AST);;});
-		assertEquals("Errore dichiarazione coeffetti alla riga ->57", exception.getMessage());
+		assertEquals("Errore dichiarazione coeffetti alla riga -> 57", exception.getMessage());
 		
 	}
 

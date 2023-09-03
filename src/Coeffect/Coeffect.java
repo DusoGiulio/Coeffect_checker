@@ -60,7 +60,6 @@ public class Coeffect {
     /**
      * Esegue l'operazione di "sup" tra questo coeffetto e un altro coeffetto.
      * 
-     * @param coef L'altro coeffetto con cui effettuare l'operazione "sup".
      * @return Il risultato dell'operazione "sup".
      */
     public Coeffect supOne() {
