@@ -5,15 +5,15 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.FileSystems;
 import java.util.ArrayList;
+
 import org.antlr.v4.runtime.ANTLRInputStream;
-import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 
 import ANTLR4.miniJavaLexer;
 import ANTLR4.miniJavaParser;
 import ANTLR4.miniJavaParser.ProgramContext;
 import ASTnodes.Class.NodeAST;
-import Exceptioin.SintatticException;
+import Exceptioin.SemanticException;
 import Exceptioin.TypeCheckingException;
 import ResultGenerator.Compile_Execute;
 import ResultGenerator.SurceCodeComposer;
@@ -34,23 +34,19 @@ public class MainMiniJava {
      * @param args Gli argomenti della riga di comando (non utilizzati).
      * @throws IOException In caso di errori di input/output.
      */
-	public static void main(String[] args) throws IOException
-	{
+	public static void main(String[] args) throws IOException{
 		//creo un char stream, posso inserire sia un file di testo che una stringa	
 		FileInputStream inputStream=null;
 		String sep= FileSystems.getDefault().getSeparator();
-		String file="CoefInference2.txt";
+		String file="TypeErrorThree.txt";
 		String indirizzoCompleto="src"+sep+"TestText"+sep+file;
-		try 
-		{
+		try {
 			inputStream = new FileInputStream(indirizzoCompleto);
-		} catch (FileNotFoundException e) 
-		{
+		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
-		CharStream input = new  ANTLRInputStream(inputStream );
 		//creo uno scanner utilizzando il lexer generato automaticamente da ANTLR4
-		miniJavaLexer lexer = new miniJavaLexer(input);
+		miniJavaLexer lexer = new miniJavaLexer(new  ANTLRInputStream(inputStream ));
 		//creo una sequenza di token usando lo scanner
 		CommonTokenStream tokens = new CommonTokenStream(lexer);
 		tokens.fill();
@@ -76,11 +72,11 @@ public class MainMiniJava {
 					System.out.println("\tINIZIO TYPE CHECKING\n//////////////////////////////////////");
 					 new TypeChecking(AST, firstvisit.getClassST());
 					System.out.println("\tTYPE CHECKING PASSATO\n");
-					System.out.println("\tINIZIO GESTIONE COEFFETTI\n//////////////////////////////////////");
+					System.out.println("\tINIZIO INFERENZA COEFFETTI\n//////////////////////////////////////");
 					new CoeffDefinitioinCheck(AST);
 					CoeffInference secondVisit=new CoeffInference(AST,firstvisit.getClassST());
 					secondVisit.visitProgram(AST);
-					System.out.println("\tFINE GESTIONE COEFFETTI\n");					
+					System.out.println("\tFINE INFERENZA COEFFETTI\n");					
 			        String nomeCartella = "src"+sep+"ResultGenerator"; 
 			        String nomeFile = "CoeffectResult.java";
 			        String percorsoCompleto = nomeCartella + sep + nomeFile;
@@ -88,21 +84,20 @@ public class MainMiniJava {
 			        System.out.println("ESEGUO "+nomeFile+" nella cartella "+nomeCartella+"\n");	
 			        new Compile_Execute(codiceSorgente.getCodiceSorgente(),percorsoCompleto,sep);
 			
-				} catch (TypeCheckingException e) 
+				} catch (TypeCheckingException  | SemanticException e) 
 				{
-					e.printStackTrace();
+					System.err.println(e.getMessage());
 					System.err.println("//////////////////////////////////////\n\tTYPE CHECKING FALLITO");
 				}
 			} catch (TypeCheckingException e1) {
-				e1.printStackTrace();
-			} catch (SintatticException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+				System.err.println(e1.getMessage());
+			} catch (SemanticException e1) {
+				System.err.println(e1.getMessage());
 			}
 			}catch(NullPointerException e) 
 			{	
-				System.err.println("//////////////////////////////////////\n\tERRORE SINTATTICO");
-				e.printStackTrace();
+				System.err.println("//////////////////////////////////////\n\tERRORE SEMANTICO");
+				System.err.println(e.getMessage());
 			}
 		}
 		else 

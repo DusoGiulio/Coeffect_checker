@@ -10,6 +10,7 @@ import Attributes.Attribute;
 import Attributes.ClassAttribute;
 import Coeffect.Coef;
 import Coeffect.VarCoeff;
+import Exceptioin.SemanticException;
 import Exceptioin.TypeCheckingException;
 import SymbolTable.*;
 import TypeDescriptor.*;
@@ -34,13 +35,15 @@ public class TypeChecking {
      * @param ast     L'ArrayList di nodi AST che rappresenta il programma.
      * @param classST La ClassSymbolTable contenente informazioni sulle dichiarazioni di classi.
      * @throws TypeCheckingException Se il controllo dei tipi incontra un errore nel programma.
+	 * @throws SemanticException 
+
      */
-	public TypeChecking(ArrayList<NodeAST> ast, ClassSymbolTable classST)  throws TypeCheckingException {
+	public TypeChecking(ArrayList<NodeAST> ast, ClassSymbolTable classST)  throws TypeCheckingException, SemanticException {
 		this.ast=ast;
 		this.classST=classST;
 		this.arrelem=false;
 		this.visitProgram(this.ast);
-
+	
 
 	}
     /**
@@ -49,8 +52,9 @@ public class TypeChecking {
      * @param ast L'ArrayList di nodi AST che rappresenta il programma.
      * @return Il TypeDescriptor risultante se il programma è corretto dal punto di vista dei tipi.
      * @throws TypeCheckingException Se il controllo dei tipi incontra un errore nel programma.
+     * @throws SemanticException 
      */
-	private TypeDescriptor visitProgram(ArrayList<NodeAST> ast) throws TypeCheckingException{
+	private TypeDescriptor visitProgram(ArrayList<NodeAST> ast) throws TypeCheckingException, SemanticException{
 		for(NodeAST klass :  ast) 
 		{
 			
@@ -96,7 +100,7 @@ public class TypeChecking {
 		
 	}
 //se tutti i body dei metodi sono ok allora ritorno il tipo della classe senno ritono errore
-	private TypeDescriptor visitClass(ClassDecl c) throws TypeCheckingException {
+	private TypeDescriptor visitClass(ClassDecl c) throws TypeCheckingException, SemanticException {
 		this.cTable= this.getClassST().lookup(c.getIdClass().getName()).getST();
 		for(MethDecl met :c.getMets()) 
 		{	//System.out.println("      Metodo:"+met.getId().getName());
@@ -178,7 +182,7 @@ public class TypeChecking {
 
 			if(type.getClass() != met.getRetType().getClass()) 
 			{
-				throw new TypeCheckingException(met.getLastLine());
+				throw new SemanticException(met.getLastLine());
 			}
 			this.isStatic=false;
 		}

@@ -7,7 +7,7 @@ import ASTnodes.Decl.*;
 import Attributes.Attribute;
 import Attributes.ClassAttribute;
 import Coeffect.Coef;
-import Exceptioin.SintatticException;
+import Exceptioin.SemanticException;
 import Exceptioin.TypeCheckingException;
 import SymbolTable.ClassSymbolTable;
 import SymbolTable.SymbolTable;
@@ -27,9 +27,9 @@ public class Fill_STC_STM  {
 	 *
 	 * @param listClass   Lista di classi AST nel programma.
 	 * @throws TypeCheckingException se si verificano eccezioni durante il controllo dei tipi.
-	 * @throws SintatticException   se si verificano eccezioni sintattiche.
+	 * @throws SemanticException   se si verificano eccezioni sintattiche.
 	 */
-	public Fill_STC_STM(ArrayList<NodeAST> listClass) throws TypeCheckingException, SintatticException 
+	public Fill_STC_STM(ArrayList<NodeAST> listClass) throws TypeCheckingException, SemanticException 
 	{
 		this.ClassST=new ClassSymbolTable();
 		this.visitProgram(listClass);
@@ -48,9 +48,9 @@ public class Fill_STC_STM  {
 	 *
 	 * @param listClass Lista di classi AST nel programma.
 	 * @throws TypeCheckingException se si verificano eccezioni durante il controllo dei tipi.
-	 * @throws SintatticException   se si verificano eccezioni sintattiche.
+	 * @throws SemanticException   se si verificano eccezioni sintattiche.
 	 */
-	private void visitProgram(ArrayList<NodeAST> listClass) throws TypeCheckingException, SintatticException 
+	private void visitProgram(ArrayList<NodeAST> listClass) throws TypeCheckingException, SemanticException 
 	{
 		NodeId id=null;
 		//per ogni classe la aggiungo alla Symboltable globale
@@ -89,7 +89,7 @@ public class Fill_STC_STM  {
 				else 
 				{
 					System.err.println("La classe <"+id.getName()+"> è stata dichiarata più volte");
-					throw new SintatticException(c.getLine());
+					throw new SemanticException(c.getLine());
 				}
 			}
 			else if(klass instanceof MainClass)
@@ -136,7 +136,7 @@ public class Fill_STC_STM  {
 												{
 													System.err.println("La variabile <"+Id.getName()+"> è già presente nella classe < "+ this.extClass.get(i-1) + "> quindi non può essere estesa");
 													flag=true;
-													throw new SintatticException(c.getLine());
+													throw new SemanticException(c.getLine());
 												}
 											}
 											else 
@@ -145,7 +145,7 @@ public class Fill_STC_STM  {
 												{
 													System.err.println("Il Metodo <"+Id.getName()+"> è già presente nella classe < "+ this.extClass.get(i-1) + "> quindi non può essere estesa");
 													flag=true;
-													throw new SintatticException(c.getLine());
+													throw new SemanticException(c.getLine());
 												}
 											}
 										}
@@ -163,7 +163,7 @@ public class Fill_STC_STM  {
 										}else 
 										{
 											System.err.println("Non è stato possibile estendere le classi a causa di nomi di variabili o metodi uguali");
-											throw new SintatticException(c.getLine());
+											throw new SemanticException(c.getLine());
 										}
 								}
 								else 
@@ -176,7 +176,7 @@ public class Fill_STC_STM  {
 												{
 													System.err.println("La variabile <"+Id.getName()+"> è già presente nella classe < "+ c.getIdClass().getName() + "> quindi non può essere estesa");
 													flag=true;
-													throw new SintatticException(c.getLine());
+													throw new SemanticException(c.getLine());
 												}
 											}
 											else 
@@ -185,7 +185,7 @@ public class Fill_STC_STM  {
 												{
 													System.err.println("Il Metodo <"+Id.getName()+"> è già presente nella classe < "+ c.getIdClass().getName() + "> quindi non può essere estesa");
 													flag=true;
-													throw new SintatticException(c.getLine());
+													throw new SemanticException(c.getLine());
 												}
 											}
 										}
@@ -202,13 +202,13 @@ public class Fill_STC_STM  {
 										}else 
 										{
 											System.err.println("Non è stato possibile estendere le classi a causa di nomi di variabili o metodi uguali");
-											throw new SintatticException(c.getLine());
+											throw new SemanticException(c.getLine());
 										}
 								}i--;}}}}}}}
 	
 	
 	
-	private void visitExtendClass(String extendClass, ClassDecl c) throws SintatticException 
+	private void visitExtendClass(String extendClass, ClassDecl c) throws SemanticException 
 	{	//se extendClass è contenuta nella symboltable
 		if(this.getClassST().lookup(extendClass)!=null ) 
 		{//se la classe non è già presente 
@@ -226,13 +226,13 @@ public class Fill_STC_STM  {
 			else 
 			{
 				System.err.println("La classe <"+extendClass+"> si estende in modo ciclico");
-				throw new SintatticException(c.getLine());
+				throw new SemanticException(c.getLine());
 			}
 		}
 		else 
 		{
 			System.err.println("La classe <"+extendClass+"> non esiste");
-			throw new SintatticException(c.getLine());
+			throw new SemanticException(c.getLine());
 		}
 	}
 
@@ -240,9 +240,9 @@ public class Fill_STC_STM  {
 	 * Visita una classe dichiarata.
 	 *
 	 * @param ctx La classe dichiarata da visitare.
-	 * @throws SintatticException se si verificano eccezioni sintattiche.
+	 * @throws SemanticException se si verificano eccezioni sintattiche.
 	 */
-	public void visitClassDecl(ClassDecl ctx) throws SintatticException 
+	public void visitClassDecl(ClassDecl ctx) throws SemanticException 
 	{
 		for(FieldDecl var :ctx.getVars()) 
 		{//per ogni variabile dichiarata nella classe aggiungo alla symbol della classe contenuta nella symboltable globale la variabile
@@ -254,7 +254,7 @@ public class Fill_STC_STM  {
 			else 
 			{
 				System.err.println("La variabile <"+var.getId().getName()+"> è già presente nella classe "+ ctx.getIdClass().getName());
-				throw new SintatticException(var.getLine());
+				throw new SemanticException(var.getLine());
 			}
 		}
 		//per ogni metoo
@@ -276,7 +276,7 @@ public class Fill_STC_STM  {
 			else 
 			{
 				System.err.println("Il metodo <"+met.getId().getName()+"> è già presente nella classe "+ ctx.getIdClass().getName());
-				throw new SintatticException(met.getLine());
+				throw new SemanticException(met.getLine());
 			}
 		}
 	}

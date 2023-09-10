@@ -101,7 +101,7 @@ public class SurceCodeComposer {
                 this.codiceSorgente = this.codiceSorgente.concat(this.sys("\"" + el.id + " |\"" + "+" + "false" + "", ""));
                 this.codiceSorgente = this.codiceSorgente.concat(this.syspl("----------------", "\t------------------------"));
             } else {
-                this.codiceSorgente = this.codiceSorgente.concat(this.sys("\"" + el.id + " |\"" + "+" + el.coef.op(cf, "leq"), " "));
+                this.codiceSorgente = this.codiceSorgente.concat(this.sys("\""+"\t" + el.id + " |\"" + "+" + el.coef.op(cf, "leq"), " "));
                 this.codiceSorgente = this.codiceSorgente.concat(this.sys("\"" + "\tcoeffetto variabile: \"" + "+" + "\"" + cf.getCoefExpr() + "\"", ""));
                 this.codiceSorgente = this.codiceSorgente.concat(this.sys("\"" + "\tcoeffetto inferito: \"" + "+" + "(" + el.coef + ")" + ".getClass().getSimpleName()", ""));
                 this.codiceSorgente = this.codiceSorgente.concat(this.syspl("----------------", "\t------------------------"));

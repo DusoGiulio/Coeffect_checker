@@ -18,7 +18,7 @@ import ANTLR4.miniJavaParser;
 import ANTLR4.miniJavaParser.ProgramContext;
 import ASTnodes.Class.NodeAST;
 import Coeffect.*;
-import Exceptioin.SintatticException;
+import Exceptioin.SemanticException;
 import Exceptioin.TypeCheckingException;
 import Visitor.ASTGenerator;
 import Visitor.CoeffDefinitioinCheck;
@@ -36,16 +36,16 @@ class Test {
 		Coeffect cf3=new Coeffect( "Affinity.One()","Affinity");
 		//somma fra due classi uguali
 		cf=cf.op(cf1, "sum");
-		assertEquals(cf.getCoefExpr(), "Nat.One().sum(Nat.One())");
+		assertEquals( "Nat.One().sum(Nat.One())",cf.getCoefExpr());
 		//somma fra una classe nat e una non nat
 		cf=cf1.op(cf2, "sum");
-		assertEquals(cf.getCoefExpr(), "(Omega.fromNat(Nat.One())).sum(new Omega())");
+		assertEquals("(Omega.fromNat(Nat.One())).sum(new Omega())",cf.getCoefExpr());
 		//somma fra una classe nat e una non nat
 		cf=cf2.op(cf1, "sum");
-		assertEquals(cf.getCoefExpr(), "new Omega().sum(Omega.fromNat(Nat.One()))");
+		assertEquals("new Omega().sum(Omega.fromNat(Nat.One()))",cf.getCoefExpr());
 		//somma fra una classe non nat e una non nat
 		cf=cf2.op(cf3, "sum");
-		assertEquals(cf.getCoefExpr(), "new Triv()");	
+		assertEquals( "new Triv()",cf.getCoefExpr());	
 	}
 	//Testa il metodo op, che eseguira mult
 		@org.junit.jupiter.api.Test
@@ -88,7 +88,7 @@ class Test {
 	}
 	
 	@org.junit.jupiter.api.Test
-	void ParsingError() throws TypeCheckingException, SintatticException 
+	void ParsingError() throws TypeCheckingException, SemanticException 
 	{
 		FileInputStream inputStream=null;
 		String sep= FileSystems.getDefault().getSeparator();
@@ -115,7 +115,7 @@ class Test {
 		assertEquals(parser.getNumberOfSyntaxErrors(),1);
 	}
 	@org.junit.jupiter.api.Test
-	void TypeErrorOne() throws TypeCheckingException, SintatticException 
+	void TypeErrorOne() throws TypeCheckingException, SemanticException 
 	{
 		FileInputStream inputStream=null;
 		String sep= FileSystems.getDefault().getSeparator();
@@ -149,7 +149,7 @@ class Test {
 	}
 	
 	@org.junit.jupiter.api.Test
-	void TypeErrorTwo() throws TypeCheckingException, SintatticException 
+	void TypeErrorTwo() throws TypeCheckingException, SemanticException 
 	{
 		FileInputStream inputStream=null;
 		String sep= FileSystems.getDefault().getSeparator();
@@ -183,7 +183,7 @@ class Test {
 	}
 	
 	@org.junit.jupiter.api.Test
-	void TypeErrorThree() throws TypeCheckingException, SintatticException 
+	void TypeErrorThree() throws TypeCheckingException, SemanticException 
 	{
 		FileInputStream inputStream=null;
 		String sep= FileSystems.getDefault().getSeparator();
@@ -217,7 +217,7 @@ class Test {
 	}
 	
 	@org.junit.jupiter.api.Test
-	void TypeErrorFour() throws TypeCheckingException, SintatticException 
+	void TypeErrorFour() throws TypeCheckingException, SemanticException 
 	{
 		FileInputStream inputStream=null;
 		String sep= FileSystems.getDefault().getSeparator();
@@ -251,7 +251,7 @@ class Test {
 	}
 	
 	@org.junit.jupiter.api.Test
-	void TypeErrorFive() throws TypeCheckingException, SintatticException 
+	void TypeErrorFive() throws TypeCheckingException, SemanticException 
 	{
 		FileInputStream inputStream=null;
 		String sep= FileSystems.getDefault().getSeparator();
@@ -287,7 +287,7 @@ class Test {
 	
 	
 	@org.junit.jupiter.api.Test
-	void Static_method_Error() throws TypeCheckingException, SintatticException 
+	void Static_method_Error() throws TypeCheckingException, SemanticException 
 	{
 		FileInputStream inputStream=null;
 		String sep= FileSystems.getDefault().getSeparator();
@@ -322,7 +322,7 @@ class Test {
 	}
 	
 	@org.junit.jupiter.api.Test
-	void CiclicExtends() throws TypeCheckingException, SintatticException 
+	void CiclicExtends() throws TypeCheckingException, SemanticException 
 	{
 		FileInputStream inputStream=null;
 		String sep= FileSystems.getDefault().getSeparator();
@@ -348,7 +348,7 @@ class Test {
 		ProgramContext p= parser.program();
 		ASTGenerator visitor= new ASTGenerator();
 		ArrayList<NodeAST> AST=visitor.visitProgram(p);;
-		SintatticException exception = assertThrows(SintatticException.class, () -> {
+		SemanticException exception = assertThrows(SemanticException.class, () -> {
 			new Fill_STC_STM(AST);});
 		assertEquals("Errore sintattico alla riga -> 6", exception.getMessage());
 		
@@ -356,7 +356,7 @@ class Test {
 	
 	
 	@org.junit.jupiter.api.Test
-	void VariableNotDeclared() throws TypeCheckingException, SintatticException 
+	void VariableNotDeclared() throws TypeCheckingException, SemanticException 
 	{
 		FileInputStream inputStream=null;
 		String sep= FileSystems.getDefault().getSeparator();
@@ -391,7 +391,7 @@ class Test {
 	}
 	
 	@org.junit.jupiter.api.Test
-	void MethodNotDeclared() throws TypeCheckingException, SintatticException 
+	void MethodNotDeclared() throws TypeCheckingException, SemanticException 
 	{
 		FileInputStream inputStream=null;
 		String sep= FileSystems.getDefault().getSeparator();
@@ -426,7 +426,7 @@ class Test {
 	}
 	
 	@org.junit.jupiter.api.Test
-	void ClassNotDeclared() throws TypeCheckingException, SintatticException 
+	void ClassNotDeclared() throws TypeCheckingException, SemanticException 
 	{
 		FileInputStream inputStream=null;
 		String sep= FileSystems.getDefault().getSeparator();
@@ -461,7 +461,7 @@ class Test {
 	}
 	
 	@org.junit.jupiter.api.Test
-	void ErrorCoeffectOne() throws TypeCheckingException, SintatticException 
+	void ErrorCoeffectOne() throws TypeCheckingException, SemanticException 
 	{
 		FileInputStream inputStream=null;
 		String sep= FileSystems.getDefault().getSeparator();
@@ -496,7 +496,7 @@ class Test {
 	}
 	
 	@org.junit.jupiter.api.Test
-	void ErrorCoeffectTwo() throws TypeCheckingException, SintatticException 
+	void ErrorCoeffectTwo() throws TypeCheckingException, SemanticException 
 	{
 		FileInputStream inputStream=null;
 		String sep= FileSystems.getDefault().getSeparator();
