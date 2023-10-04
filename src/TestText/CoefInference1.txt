@@ -9,7 +9,6 @@ System.out.println (new Pair());
 	boolean t;
 
 	Pair setFields(@Coeffect(coeffClass="Affinity", exp="Affinity.one()")Pair this, @Coeffect(coeffClass="Affinity", exp="Affinity.one()")A myFst, @Coeffect(coeffClass="Affinity", exp="Affinity.one()")A mySnd) {
-		//t= 1;
 		snd = mySnd;
 		return this;
 	}
@@ -19,8 +18,11 @@ System.out.println (new Pair());
 class A {
 	
 	
-	A drop1(@Coeffect(coeffClass="Affinity", exp="Affinity.zero()")A this,@Coeffect(coeffClass="Affinity", exp="Affinity.zero()")A c) {
-		return new A();
+	A zero(@Coeffect(coeffClass="Nat", exp="Nat.one()")A this,@Coeffect(coeffClass="Nat", exp="Nat.zero()")A prova) {
+		@Coeffect(coeffClass="Nat", exp="Nat.one()") int b;
+		@Coeffect(coeffClass="Nat", exp="Nat.zero()") int c;
+		c=b;
+		return this;
 	}
 
 	
@@ -32,25 +34,35 @@ class A {
 		return this;
 	}
 
-	Pair duplicate(@Coeffect(coeffClass="Affinity", exp="new Omega()")A this) {
+	Pair met1(@Coeffect(coeffClass="Affinity", exp="new Omega()")A this) {
 		@Coeffect(coeffClass="Affinity", exp="Affinity.one()") Pair p;
 
-		return p.setFields(this,this);
+		return new Pair();
 	}
 	
 	
-	A metCall(@Coeffect(coeffClass="Affinity", exp="Affinity.one()") A this) {
+	A omega(@Coeffect(coeffClass="Affinity", exp="Affinity.one()") A this) {
 		@Coeffect(coeffClass="Affinity", exp="new Omega()") A a1;
 		@Coeffect(coeffClass="Affinity", exp="Affinity.one()") A a2;
 		@Coeffect(coeffClass="Affinity", exp="Affinity.one()") A a3;
-		Pair pop;
-		//a1 = new A();
-		a3= new A();
+		Pair p;
+		p=a1.met1(); 
+		return a2;
+	}
+	
+	int xy()
+	{
 		
-		a2 = a3;
-		pop=a1.duplicate();  //a4 2 volte  (a3 2 volta a1 4 volte)
-		a1=a2.drop().identity();
-		return a1;
+		@Coeffect(coeffClass="Affinity", exp="new Omega()") int x1;
+		@Coeffect(coeffClass="Affinity", exp="Affinity.one()") int y1;
+		@Coeffect(coeffClass="Affinity", exp="new Omega()") int x2;
+		@Coeffect(coeffClass="Affinity", exp="new Omega()") int y2;
+		@Coeffect(coeffClass="Affinity", exp="new Omega()") int z;
+		@Coeffect(coeffClass="Affinity", exp="new Omega()") int w;
+		x1 = z + w;
+    	y1 = x1 + x1;
+    	x2 = x1 + y1;
+    	return y2;
 	}
 }
 @CoeffectClass

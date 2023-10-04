@@ -13,17 +13,17 @@ import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 
-import ANTLR4.miniJavaLexer;
-import ANTLR4.miniJavaParser;
-import ANTLR4.miniJavaParser.ProgramContext;
-import ASTnodes.Class.NodeAST;
-import Coeffect.*;
-import Exceptioin.SemanticException;
-import Exceptioin.TypeCheckingException;
-import Visitor.ASTGenerator;
-import Visitor.CoeffDefinitioinCheck;
-import Visitor.Fill_STC_STM;
-import Visitor.TypeChecking;
+import antlr4.miniJavaLexer;
+import antlr4.miniJavaParser;
+import antlr4.miniJavaParser.ProgramContext;
+import astNodes.Class.NodeAST;
+import coeffect.*;
+import exceptioin.SemanticException;
+import exceptioin.TypeCheckingException;
+import visitor.ASTGenerator;
+import visitor.CoeffDefinitioinCheck;
+import visitor.Fill_STC_STM;
+import visitor.TypeChecking;
 
 class Test {
 
