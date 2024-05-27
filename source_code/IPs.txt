@@ -1,0 +1,21 @@
+Ubuntu 20.04 129.114.27.43
+CC-CentoS7 129.114.27.209
+Ubuntu 16 129.114.26.104
+
+pw admin1
+
+
+Nome Volume : DusoGiulioVolume1GB
+
+
+wsl
+usr: giulio
+pwd: duso
+
+pwdChml= DuSo8991giulio
+
+b8caf4c0-6fd0-4edf-bc53-35ad8ea8b9f6 CC-CentOS7
+ 3 flavor-medium
+ 5d778d0d-4eaa-4026-94c7-eecc81c632e2 default
+
+/mnt/c/Users/Giulio/OneDrive/Desktop/uni/Magistrale/primo_anno/Secondosemestre/SDBD/CloudComputing
