@@ -7,13 +7,14 @@
 >- The documentation in the form of Javadoc in the <a href="./source_code/doc">doc</a> folder
 >- The file specifying the MiniJava grammar, named <a href="./source_code/miniJava.g4">miniJava.g4</a>.
 > In the <a href="./executable_code">executable_code</a> folder you'll find:
->- The executable file [Coeffect_MiniJava.jar](executable_code/Coeffect_MiniJava.jar)
+>- The executable file <a href="./executable_code/Coeffect_MiniJava.jar">Coeffect_MiniJava.jar</a>
 >- The necessary folders for the proper functioning of the JAR should be generated automatically during the JAR execution, containing the required files. In case this doesn't happen, they are available for download.
 </span>
-<span style="font-size:larger;"><strong>How use the executable file</strong>
->-Open JAR
->-Press button "Aggiungi File"
+<span style="font-size:larger;"><strong>How to use the executable file</strong>
+>- Open JAR
+>- Press the "Aggiungi File" button
 >- Select the .java or .txt file you want to analyze. <strong>It's possible to analyze only one file at a time.</strong>
->-Press button "Avvia analisi"
->-The results will be displayed in the label below.
+>- Press the "Avvia analisi" button
+>- The results will be displayed in the label below.
 </span>
+
