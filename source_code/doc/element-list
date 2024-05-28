@@ -1,0 +1,17 @@
+coeffectChecking
+coeffectChecking.Coeffect
+coeffectChecking.ResultGenerator
+gui
+Main
+parser
+parser.ANTLR4
+parser.ASTnodes.Class
+parser.ASTnodes.Decl
+parser.ASTnodes.Exp
+parser.ASTnodes.Stm
+test
+typeChecking
+typeChecking.Attributes
+typeChecking.Exceptioin
+typeChecking.SymbolTable
+typeChecking.TypeDescriptor
