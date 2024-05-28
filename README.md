@@ -10,8 +10,9 @@
 >- The executable file <a href="./executable_code/Coeffect_MiniJava.jar">Coeffect_MiniJava.jar</a>
 >- The necessary folders for the proper functioning of the JAR should be generated automatically during the JAR execution, containing the required files. In case this doesn't happen, they are available for download.
 </span>
+
 <span style="font-size:larger;"><strong>How to use the executable file</strong>
->- Open JAR
+>Open JAR
 >- Press the "Aggiungi File" button
 >- Select the .java or .txt file you want to analyze. <strong>It's possible to analyze only one file at a time.</strong>
 >- Press the "Avvia analisi" button
