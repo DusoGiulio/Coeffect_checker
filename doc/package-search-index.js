@@ -1,1 +1,0 @@
-packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"ASTnodes.Class"},{"l":"ASTnodes.Decl"},{"l":"ASTnodes.Exp"},{"l":"ASTnodes.Stm"},{"l":"Attributes"},{"l":"Coeffect"},{"l":"Exceptioin"},{"l":"Main"},{"l":"ResultGenerator"},{"l":"SymbolTable"},{"l":"test"},{"l":"TypeDescriptor"},{"l":"Visitor"}];updateSearchResults();
