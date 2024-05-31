@@ -14,7 +14,7 @@
 <span style="font-size:larger;"><strong>How to use the executable file</strong>
 >Open JAR
 >- Press the "Aggiungi File" button
->- Select the .java or .txt file you want to analyze. <strong>It's possible to analyze only one file at a time.</strong>
+>- Select the .java or .txt files you want to analyze. <strong>Attention, the first selected file must contain the method main.</strong>
 >- Press the "Avvia analisi" button
 >- The results will be displayed in the label below.
 </span>
