@@ -17,7 +17,10 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * Classe che rappresenta l'interfaccia grafica dell'applicazione per l'analisi dei coeffetti.
+ * Estende JFrame e permette all'utente di aggiungere file, avviare l'analisi e visualizzare i risultati.
+ */
 public class Interfaccia extends JFrame {
 
     /**
@@ -29,10 +32,13 @@ public class Interfaccia extends JFrame {
     protected File percorsoCartellaOutput;
     protected File percorsoCartellaPredefCoeff;
     protected File percorsoCartellaExp;
-    String sep= FileSystems.getDefault().getSeparator();
-	String file="CoeffettiBase.txt";
-	String indirizzoCompleto="src"+sep+"TestText"+sep+"Predefiniti"+sep+file;
-
+    private String sep= FileSystems.getDefault().getSeparator();
+	private String file="CoeffettiBase.txt";
+	private String indirizzoCompleto="src"+sep+"TestText"+sep+"Predefiniti"+sep+file;
+	  /**
+     * Costruttore della classe Interfaccia. Inizializza le cartelle necessarie,
+     * copia i file predefiniti nelle cartelle appropriate e imposta l'interfaccia grafica.
+     */
     public Interfaccia() {
     	
     	this.percorsoCartellaOutput= this.createDir("Output");
@@ -81,7 +87,7 @@ public class Interfaccia extends JFrame {
                     }
                    
                 }
-                fileList.add(new File(percorsoCartellaPredefCoeff.toString()+sep+file));
+                
             }
             
         });
@@ -91,7 +97,7 @@ public class Interfaccia extends JFrame {
         saveButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+            	fileList.add(new File(percorsoCartellaPredefCoeff.toString()+sep+file));
                 try {
 					new CopyFile(fileList, percorsoCartellaOutput);
 				} catch (IOException e1) {
@@ -121,7 +127,12 @@ public class Interfaccia extends JFrame {
         PrintStream printStream = new PrintStream(new CustomOutputStream(outputTextArea));
         System.setOut(printStream);
     }
-    
+    /**
+     * Crea una directory con il nome specificato nella stessa directory del file JAR eseguibile.
+     *
+     * @param name Il nome della directory da creare.
+     * @return Il file rappresentante la directory creata.
+     */
     private File createDir(String name) {
     	File outputDir=null;
        	//Creazione cartella di Output in cui sccriverò i file di output e cartella di Input in cui inserire il file
@@ -153,6 +164,13 @@ public class Interfaccia extends JFrame {
      return outputDir;
     	
     }
+    /**
+     * Copia un file dalla sorgente alla destinazione specificata.
+     *
+     * @param sourceFilePath      Il percorso del file sorgente.
+     * @param destinationDirPath  Il percorso della directory di destinazione.
+     * @param fileName            Il nome del file da copiare.
+     */
     public static void copyFile(String sourceFilePath, String destinationDirPath, String fileName) {
         // Crea oggetti Path per il file di origine e la cartella di destinazione
         Path sourcePath = Paths.get(sourceFilePath);
@@ -170,9 +188,17 @@ public class Interfaccia extends JFrame {
 
 }
 
+/**
+ * Classe CustomOutputStream per reindirizzare l'output della console a un JTextArea.
+ */
 class CustomOutputStream extends OutputStream {
     private JTextArea textArea;
 
+    /**
+     * Costruttore che accetta un JTextArea dove scrivere l'output.
+     *
+     * @param textArea Il JTextArea dove scrivere l'output.
+     */
     public CustomOutputStream(JTextArea textArea) {
         this.textArea = textArea;
     }
