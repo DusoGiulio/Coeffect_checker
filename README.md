@@ -12,7 +12,8 @@
 </span>
 
 <span style="font-size:larger;"><strong>How to use the executable file</strong>
->Open JAR
+>Download directory <a href="./executable_code">executable_code</a> and open it
+>-Open the executable file <a href="./executable_code/Coeffect_MiniJava.jar">Coeffect_MiniJava.jar</a>:
 >- Press the "Aggiungi File" button
 >- Select the .java or .txt files you want to analyze. <strong>Attention, the first selected file must contain the method main.</strong>
 >- Press the "Avvia analisi" button
