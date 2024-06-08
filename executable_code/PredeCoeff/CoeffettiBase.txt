@@ -1,8 +1,6 @@
 @CoeffectClass
-class Nat {
-	boolean leq(Nat x) {
-		return true;
-	}
+abstract class Nat {
+	abstract boolean leq(Nat x) ;
 
 	Nat sup(Nat x) {
 		Nat result;
@@ -13,13 +11,9 @@ class Nat {
 		return result;
 	}
 
-	Nat sum(Nat x) {
-		return x;
-	}
+	abstract Nat sum(Nat x) ;
 
-	Nat mult(Nat x) {
-		return this;
-	}
+	abstract Nat mult(Nat x);
 
 	static Nat zero() {
 		return new Zero();
@@ -79,6 +73,16 @@ class Succ extends Nat {
 
 @CoeffectAuxClass("Nat")
  class Zero extends Nat {
+ 	Nat sum(Nat x) {
+		return x;
+	}
+
+	Nat mult(Nat x) {
+		return this;
+	}
+		boolean leq(Nat x) {
+		return true;
+	}
 
 	 }
 
