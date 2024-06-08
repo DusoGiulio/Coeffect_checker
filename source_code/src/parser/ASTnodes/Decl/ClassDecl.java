@@ -3,6 +3,7 @@ package parser.ASTnodes.Decl;
 import java.util.ArrayList;
 
 import parser.ASTnodes.Class.NodeId;
+import typeChecking.TypeDescriptor.ClassTypeDescriptor;
 import typeChecking.TypeDescriptor.TypeDescriptor;
 
 /**
@@ -78,17 +79,23 @@ public class ClassDecl extends Decl {
     @Override
     public String toString() {
         String acc = new String();
+        if(this.getType() instanceof ClassTypeDescriptor) {
+        	ClassTypeDescriptor ctd= (ClassTypeDescriptor)this.getType();
+        	if(ctd.getIsAbstract()) {
+        		acc= acc.concat("\n\t abstract ");
+        	}
+        }
         if (this.Idextends != null) {
-            acc = acc.concat("\n class " + this.IdClass.toString() + " extends " + this.Idextends.toString() + " { \n");
+            acc = acc.concat(" class " + this.IdClass.toString() + " extends " + this.Idextends.toString() + " { \n\t");
         } else {
-            acc = acc.concat("\n class " + this.IdClass.toString() + " {\n ");
+            acc = acc.concat(" class " + this.IdClass.toString() + " {\n\t ");
         }
 
         for (FieldDecl f : this.vars) {
-            acc = acc.concat("\n" + f.toString() + ";\n");
+            acc = acc.concat("\t\n" + f.toString() + ";\n");
         }
         for (MethDecl m : this.mets) {
-            acc = acc.concat("\n" + m.toString() + "\n");
+            acc = acc.concat("\t\n" + m.toString() + "\n");
         }
         acc = acc.concat("\n}");
         return acc;

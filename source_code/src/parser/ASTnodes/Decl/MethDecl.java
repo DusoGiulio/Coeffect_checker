@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import parser.ASTnodes.Class.Body;
 import parser.ASTnodes.Class.NodeId;
+import typeChecking.TypeDescriptor.MethTypeDescriptor;
 import typeChecking.TypeDescriptor.TypeDescriptor;
 
 /**
@@ -99,7 +100,24 @@ public class MethDecl extends Decl {
      */
     @Override
     public String toString() {
-        String acc = "public " + this.getType() + " " + this.retType.toString() + " " + this.id.getName() + "(";
+        String acc = "\tpublic " + this.getType() + " " + this.retType.toString() + " " + this.id.getName() + "(";
+        
+        if(this.getType() instanceof MethTypeDescriptor) {
+        	MethTypeDescriptor ctd= (MethTypeDescriptor)this.getType();
+        	if(ctd.isAbstract()) {
+        		acc= "\n\tabstract public " + this.getType() + " " + this.retType.toString() + " " + this.id.getName() + "(";
+            	for (VarDecl v : this.getFormals()) {
+                    if (this.getFormals().indexOf(v) == this.getFormals().size() - 1) {
+                        acc = acc.concat(" " + v.toString() + " ");
+                    } else {
+                        acc = acc.concat(" " + v.toString() + ",");
+                    }
+                }
+            	acc= acc.concat(");");
+            	return acc;
+        	}
+        }
+        
         for (VarDecl v : this.getFormals()) {
             if (this.getFormals().indexOf(v) == this.getFormals().size() - 1) {
                 acc = acc.concat(" " + v.toString() + " ");
@@ -108,7 +126,7 @@ public class MethDecl extends Decl {
             }
         }
 
-        acc = acc.concat("){\n" + this.body.toString() + "\n}");
+        acc = acc.concat("){\n\t" + this.body.toString() + "\n}");
         return acc;
     }
 }
