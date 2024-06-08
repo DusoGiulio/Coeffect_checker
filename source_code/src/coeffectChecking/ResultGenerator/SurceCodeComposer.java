@@ -38,16 +38,16 @@ public class SurceCodeComposer {
         
         this.codiceSorgente = this.codiceSorgente.concat("");
         this.ASt = ASt;
-        
         this.codiceSorgente = this.codiceSorgente.concat("public class CoeffectResult {\n" + "\tpublic static void main(String[] args) {\n");
         this.visitClassST();
-        for (NodeAST node : this.ASt) {
+        for (NodeAST node : this.ASt) {    	
             if (node instanceof ClassDecl) {
                 ClassDecl c = (ClassDecl) node;
-                if (((ClassTypeDescriptor) c.getType()).isCoeff() == Coef.COEFF || ((ClassTypeDescriptor) c.getType()).isCoeff() == Coef.AUXCOEF) {
-                    this.codiceSorgente = this.codiceSorgente.concat(c.toString());
+                if (((ClassTypeDescriptor) c.getType()).isCoeff() == Coef.COEFF || ((ClassTypeDescriptor) c.getType()).isCoeff() == Coef.AUXCOEF) {  
+                	this.codiceSorgente = this.codiceSorgente.concat(c.toString());
                 }
             }
+        	
         }
     }
 
@@ -56,7 +56,7 @@ public class SurceCodeComposer {
      */
     private void visitClassST() {
         for (String id : this.classST.ST().keySet()) {
-            // Aggiungo a codice sorgente una System.out.println del nome della classe
+            // Aggiungo a codice sorgente una System.out.println del nome della classe	
             if (this.classST.lookup(id).getIsCoeff() == Coef.NOTCOEF) {
                 this.codiceSorgente = this.codiceSorgente.concat(this.syspl("------------------------", "------------------------"));
                 this.codiceSorgente = this.codiceSorgente.concat(this.syspl(id, "Classe | "));

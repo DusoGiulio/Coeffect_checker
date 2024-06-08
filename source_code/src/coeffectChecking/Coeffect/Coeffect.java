@@ -88,10 +88,10 @@ public class Coeffect {
     public Coeffect op(Coeffect coef, String op) {
     	if(op.equals("leq")) 
     	{
-    		if(this.coefClass.toString().contains("Triv")) 
+    		if(coef.coefClass.toString().contains("Triv"))    // qui dovrebbe essere:  if(coef.coefClass.toString().contains("Triv")) 
     		{
     			return boolLeq(op, coef, true);
-    		}else if(coef.coefClass.toString().contains("Triv")) 
+    		}else if(this.coefClass.toString().contains("Triv")) // e qui: (this.coefClass.toString().contains("Triv"))
     		{
     			return boolLeq(op, coef, false);
     		}
