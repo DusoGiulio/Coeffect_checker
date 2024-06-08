@@ -34,7 +34,7 @@ public class Interfaccia extends JFrame {
     protected File percorsoCartellaExp;
     private String sep= FileSystems.getDefault().getSeparator();
 	private String file="CoeffettiBase.txt";
-	private String indirizzoCompleto="src"+sep+"TestText"+sep+"Predefiniti"+sep+file;
+	//private String indirizzoCompleto="src"+sep+"TestText"+sep+"Predefiniti"+sep+file;
 	  /**
      * Costruttore della classe Interfaccia. Inizializza le cartelle necessarie,
      * copia i file predefiniti nelle cartelle appropriate e imposta l'interfaccia grafica.
@@ -44,10 +44,6 @@ public class Interfaccia extends JFrame {
     	this.percorsoCartellaOutput= this.createDir("Output");
     	this.percorsoCartellaPredefCoeff=this.createDir("PredeCoeff");
     	this.percorsoCartellaExp= this.createDir("examples");
-    	
-    	Interfaccia.copyFile(indirizzoCompleto,this.percorsoCartellaPredefCoeff.toString(),  file);
-    	Interfaccia.copyFile("src"+sep+"TestText"+sep+"CoefInference1.txt", this.percorsoCartellaExp.toString(), "CoefInference1.txt");
-    	Interfaccia.copyFile("src"+sep+"TestText"+sep+"CoefInference2.txt", this.percorsoCartellaExp.toString(), "CoefInference2.txt");
     	
         fileList = new ArrayList<>();
 

@@ -55,7 +55,7 @@ public class CopyFile {
             }
         } catch (IOException e) {
             e.printStackTrace();
-            System.out.println("Si è verificato un errore durante la creazione del file.");
+            System.out.println("Si è verificato un errore durante la creazione del file."+outputFile);
             throw e; // Rilancia l'eccezione per segnalare il fallimento
         }
     }
