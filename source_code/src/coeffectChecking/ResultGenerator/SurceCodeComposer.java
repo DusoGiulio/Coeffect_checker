@@ -77,9 +77,9 @@ public class SurceCodeComposer {
             if (cAttr.getST().lookup(id).getType() instanceof MethTypeDescriptor) {
             	if(!((MethTypeDescriptor)cAttr.getST().lookup(id).getType()).isAbstract()) {
                 // Aggiungo a codice sorgente una System.out.println del nome del metodo
-                this.codiceSorgente = this.codiceSorgente.concat(this.syspl(id.getName(), "\tMetodo | "));
+                this.codiceSorgente = this.codiceSorgente.concat(this.syspl(id.getName(), "    Metodo | "));
                 this.codiceSorgente = this.codiceSorgente.concat(this.syspl("----------------", "\t------------------------"));
-                this.codiceSorgente = this.codiceSorgente.concat(this.syspl("", "\tVariabili | "));
+                this.codiceSorgente = this.codiceSorgente.concat(this.syspl("", "\t  Variabili | "));
                 this.codiceSorgente = this.codiceSorgente.concat(this.syspl("----------------", "\t------------------------"));
                 this.visitMethCoeffTable(cAttr.getST().lookup(id));
                 this.codiceSorgente = this.codiceSorgente.concat(this.syspl("----------------", "\t------------------------"));
@@ -98,10 +98,44 @@ public class SurceCodeComposer {
             VarCoeff coeffect = this.findCoef(attr, el.id);
 
             Coeffect cf = new Coeffect(coeffect.fromExpToEclipseExp(), coeffect.getClassCoeff().toString());
-                this.codiceSorgente = this.codiceSorgente.concat(this.sys("\""+"\t" + el.id + " |\"" + "+" + el.coef.op(cf, "leq"), " "));
-                this.codiceSorgente = this.codiceSorgente.concat(this.sys("\"" + "\tcoeffetto variabile: \"" + "+" + "\"" + cf.getCoefExpr() + "\"", ""));
-                this.codiceSorgente = this.codiceSorgente.concat(this.sys("\"" + "\tcoeffetto inferito: \"" + "+" + "(" + el.coef + ")" + ".getClass().getSimpleName()", ""));
+            	this.codiceSorgente = this.codiceSorgente.concat("\tif("+el.coef.op(cf, "leq")+"){\n\t\t"+"System.out.println("+"\""+"\t   | "+el.id+"-> \""+"+"+"\""+true+"\")"+";\t\n\t}"
+            			+ "\telse{\n\t\t System.out.println("+"\""+"\t   | "+el.id+"-> \""+"+"+"\""+false+"\")"+";\t\n\t}\n");
+                //this.codiceSorgente = this.codiceSorgente.concat(this.sys("\""+"\t   | " + el.id + " -> \"" + "+" + el.coef.op(cf, "leq"), " "));
+                this.codiceSorgente = this.codiceSorgente.concat(this.sys("\"" + "\t   | coeffetto variabile: \"" + "+" + "\"" + cf.getCoefExpr() + "\"", ""));
+                this.codiceSorgente = this.codiceSorgente.concat(this.sys("\"" + "\t   | coeffetto inferito: \"" + "+" + "(" + el.coef + ")" + ".getClass().getSimpleName()", ""));
                 this.codiceSorgente = this.codiceSorgente.concat(this.syspl("----------------", "\t------------------------"));
+        }
+        for (NodeId nId : attr.getFormals().getSymbolTable().keySet()) {
+            if (attr.getFormals().lookup(nId) !=null) {
+            	if(attr.getFormals().lookup(nId).getType() instanceof CoeffectTypeDescriptor) {
+            		if(((CoeffectTypeDescriptor)attr.getFormals().lookup(nId).getType()).getVarCoeff()!=null){
+            			if(((CoeffectTypeDescriptor) attr.getFormals().lookup(nId).getType()).getVarCoeff().getExpCoeff()!=null){
+            				if(attr.getCoef().findElement(nId.getName()) == null) {
+            					this.codiceSorgente = this.codiceSorgente.concat(this.sys("", "\""+"\t  | " + nId.getName() + " ->true \"" ));
+            					this.codiceSorgente = this.codiceSorgente.concat(this.sys("\"" + "\t   | coeffetto variabile: \"" + "+" + "\"" + ((CoeffectTypeDescriptor) attr.getFormals().lookup(nId).getType()).getVarCoeff().getExpCoeff() + "\"", ""));
+            					this.codiceSorgente = this.codiceSorgente.concat(this.sys("\"" + "\t   | coeffetto inferito: \"" + "+" + "\"" + ((CoeffectTypeDescriptor) attr.getFormals().lookup(nId).getType()).getVarCoeff().getExpCoeff() + "\"", ""));
+            					this.codiceSorgente = this.codiceSorgente.concat(this.syspl("----------------", "\t------------------------"));
+            				}
+            			}
+            		}
+            	}
+            }
+        }
+        for (NodeId nId : attr.getLocal().getSymbolTable().keySet()) {
+            if (attr.getLocal().lookup(nId) !=null) {
+            	if(attr.getLocal().lookup(nId).getType() instanceof CoeffectTypeDescriptor) {
+            		if(((CoeffectTypeDescriptor)attr.getLocal().lookup(nId).getType()).getVarCoeff()!=null){
+            			if(((CoeffectTypeDescriptor) attr.getLocal().lookup(nId).getType()).getVarCoeff().getExpCoeff()!=null){
+            				if(attr.getCoef().findElement(nId.getName()) == null) {
+            					this.codiceSorgente = this.codiceSorgente.concat(this.sys("", "\""+"\t  | " + nId.getName() + " ->true \"" ));
+            					this.codiceSorgente = this.codiceSorgente.concat(this.sys("\"" + "\t   | coeffetto variabile: \"" + "+" + "\"" + ((CoeffectTypeDescriptor) attr.getLocal().lookup(nId).getType()).getVarCoeff().getExpCoeff() + "\"", ""));
+            					this.codiceSorgente = this.codiceSorgente.concat(this.sys("\"" + "\t   | coeffetto inferito: \"" + "+" + "\"" + ((CoeffectTypeDescriptor) attr.getLocal().lookup(nId).getType()).getVarCoeff().getExpCoeff() + "\"", ""));
+            					this.codiceSorgente = this.codiceSorgente.concat(this.syspl("----------------", "\t------------------------"));
+            				}
+            			}
+            		}
+            	}
+            }
         }
     }
 
@@ -149,7 +183,7 @@ public class SurceCodeComposer {
     }
 
     /**
-     * Restituisce il percorso del file di destinazione in cui verrà scritto il codice sorgente generato.
+     * Restituisce il percorso del file di destinazione in cui verrÃ  scritto il codice sorgente generato.
      *
      * @return Il percorso del file di destinazione.
      */
@@ -158,7 +192,7 @@ public class SurceCodeComposer {
     }
 
     /**
-     * Imposta il percorso del file di destinazione in cui verrà scritto il codice sorgente generato.
+     * Imposta il percorso del file di destinazione in cui verrÃ  scritto il codice sorgente generato.
      *
      * @param destinazioneFile Il percorso del file di destinazione.
      */

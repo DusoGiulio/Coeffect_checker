@@ -5,7 +5,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-
 /**
  * Classe per la compilazione ed esecuzione del codice sorgente MiniJava risultante.
  */
@@ -39,31 +38,25 @@ public class Compile_Execute {
                 }
                 return;
             }
-            
+
             // Estrarre il nome della classe e il package dal percorso del file
             String classPath = percorsoCompleto.substring(0, percorsoCompleto.lastIndexOf(sep));
             String classNameWithPackage = percorsoCompleto.substring(percorsoCompleto.lastIndexOf(sep) + 1, percorsoCompleto.indexOf(".java"));
-          
-            // Converti il percorso del file in nome del package
-            String relativePath = classPath;
-            String fullClassName = relativePath.isEmpty() ? classNameWithPackage : relativePath + sep + classNameWithPackage+".java";
 
             // Esecuzione del file compilato
-            Process processoEsecuzione = Runtime.getRuntime().exec("java -cp " + classPath + " " + fullClassName);
+            ProcessBuilder processoEsecuzioneBuilder = new ProcessBuilder("java", "-cp", classPath, classNameWithPackage);
+            processoEsecuzioneBuilder.redirectErrorStream(true);
+            Process processoEsecuzione = processoEsecuzioneBuilder.start();
+            
+            BufferedReader reader = new BufferedReader(new InputStreamReader(processoEsecuzione.getInputStream()));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                System.out.println(line);
+            }
+
             exitCode = processoEsecuzione.waitFor();
-            if (exitCode == 0) {
-                BufferedReader reader = new BufferedReader(new InputStreamReader(processoEsecuzione.getInputStream()));
-                String st;
-                while ((st = reader.readLine()) != null) {
-                    System.out.println(st);
-                }
-            } else {
+            if (exitCode != 0) {
                 System.out.println("Esecuzione fallita.");
-                BufferedReader errorReader = new BufferedReader(new InputStreamReader(processoEsecuzione.getErrorStream()));
-                String s;
-                while ((s = errorReader.readLine()) != null) {
-                    System.err.println(s);
-                }
             }
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
