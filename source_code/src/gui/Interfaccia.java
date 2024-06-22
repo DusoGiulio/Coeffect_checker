@@ -11,10 +11,13 @@ import java.io.OutputStream;
 import java.io.PrintStream;
 import java.net.URISyntaxException;
 import java.nio.file.FileSystems;
+import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.SimpleFileVisitor;
 import java.nio.file.StandardCopyOption;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.List;
 /**
@@ -33,7 +36,7 @@ public class Interfaccia extends JFrame {
     protected File percorsoCartellaPredefCoeff;
     protected File percorsoCartellaExp;
     private String sep= FileSystems.getDefault().getSeparator();
-	private String file="CoeffettiBase.txt";
+	private String file="CoeffettiBase.java";
 	//private String indirizzoCompleto="src"+sep+"TestText"+sep+"Predefiniti"+sep+file;
 	  /**
      * Costruttore della classe Interfaccia. Inizializza le cartelle necessarie,
@@ -41,10 +44,10 @@ public class Interfaccia extends JFrame {
      */
     public Interfaccia() {
     	
-    	this.percorsoCartellaOutput= this.createDir("Output");
+    	
     	this.percorsoCartellaPredefCoeff=this.createDir("PredeCoeff");
     	this.percorsoCartellaExp= this.createDir("examples");
-    	
+    	this.percorsoCartellaOutput= this.createDir("Output");
         fileList = new ArrayList<>();
 
         // Impostazioni del frame
@@ -68,6 +71,7 @@ public class Interfaccia extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 JFileChooser fileChooser = new JFileChooser();
+                fileChooser.setCurrentDirectory(percorsoCartellaExp);
                 fileChooser.setMultiSelectionEnabled(true);
 
                 // Aggiungi un filtro per permettere solo file con estensione .txt o .java
@@ -91,8 +95,16 @@ public class Interfaccia extends JFrame {
         // Pulsante per salvare la lista di file
         JButton saveButton = new JButton("Avvia Analisi");
         saveButton.addActionListener(new ActionListener() {
+        	
             @Override
             public void actionPerformed(ActionEvent e) {
+            	try {
+					deleteDirectory(percorsoCartellaOutput);
+				} catch (IOException e2) {
+					// TODO Auto-generated catch block
+					e2.printStackTrace();
+				}
+            	percorsoCartellaOutput= createDir("Output");
             	fileList.add(new File(percorsoCartellaPredefCoeff.toString()+sep+file));
                 try {
 					new CopyFile(fileList, percorsoCartellaOutput);
@@ -129,9 +141,9 @@ public class Interfaccia extends JFrame {
      * @param name Il nome della directory da creare.
      * @return Il file rappresentante la directory creata.
      */
-    private File createDir(String name) {
+    public File createDir(String name) {
     	File outputDir=null;
-       	//Creazione cartella di Output in cui sccriverò i file di output e cartella di Input in cui inserire il file
+       	//Creazione cartella di Output in cui sccriverï¿½ i file di output e cartella di Input in cui inserire il file
    	 try {
             // Ottieni il percorso dell'eseguibile (il file .jar)
             File jarFile = new File(CreateDirectory.class.getProtectionDomain().getCodeSource().getLocation().toURI());
@@ -146,12 +158,10 @@ public class Interfaccia extends JFrame {
             if (!outputDir.exists()) {
                 boolean created = outputDir.mkdirs();
                 if (created) {
-                    System.out.println("Cartella "+name+" creata con successo.");
                 } else {
                     System.out.println("Errore nella creazione della cartella "+name+".");
                 }
             } else {
-                System.out.println("La cartella "+name+" esiste già.");
             }
         } catch (URISyntaxException e) {
             e.printStackTrace();
@@ -159,6 +169,22 @@ public class Interfaccia extends JFrame {
         }
      return outputDir;
     	
+    }
+    public void deleteDirectory(File percorsoCartellaOutput) throws IOException {
+    	Path directory = percorsoCartellaOutput.toPath();
+        Files.walkFileTree(directory, new SimpleFileVisitor<Path>() {
+            @Override
+            public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+                Files.delete(file);
+                return FileVisitResult.CONTINUE;
+            }
+
+            @Override
+            public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
+                Files.delete(dir);
+                return FileVisitResult.CONTINUE;
+            }
+        });
     }
     /**
      * Copia un file dalla sorgente alla destinazione specificata.
@@ -175,7 +201,6 @@ public class Interfaccia extends JFrame {
         try {
             // Copia il file dalla sorgente alla destinazione
             Files.copy(sourcePath, destinationPath, StandardCopyOption.REPLACE_EXISTING);
-            System.out.println("File copiato con successo.");
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("Errore nella copia del file.");
@@ -205,6 +230,7 @@ class CustomOutputStream extends OutputStream {
         textArea.setCaretPosition(textArea.getDocument().getLength());
     }
 }
+
 
 
 

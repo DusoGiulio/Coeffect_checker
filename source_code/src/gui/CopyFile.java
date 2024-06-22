@@ -12,7 +12,7 @@ import Main.AvviaAnalisi;
 public class CopyFile {
 
     private String sep = FileSystems.getDefault().getSeparator();
-    private String fileName = "analizedFile.txt";
+    private String fileName = "analizedFile.java";
 
     /**
      * Costruttore della classe CopyFile.
@@ -49,9 +49,9 @@ public class CopyFile {
             // Avvia l'analisi sul file creato
             new AvviaAnalisi(indirizzo);
             if (created) {
-                System.out.println("Il file è stato creato con successo.");
+               // System.out.println("Il file è stato creato con successo.");
             } else {
-                System.out.println("Il file esiste già.");
+                //System.out.println("Il file esiste già.");
             }
         } catch (IOException e) {
             e.printStackTrace();
