@@ -31,7 +31,7 @@ public class AvviaAnalisi {
 
     private FileInputStream inputStream = null;
     private String sep = FileSystems.getDefault().getSeparator();
-    private String file = "analizedFile.txt";
+    private String file = "analizedFile.java";
 
     /**
      * Costruttore della classe AvviaAnalisi.
