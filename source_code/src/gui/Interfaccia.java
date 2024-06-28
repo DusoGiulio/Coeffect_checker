@@ -45,7 +45,7 @@ public class Interfaccia extends JFrame {
     public Interfaccia() {
     	
     	
-    	this.percorsoCartellaPredefCoeff=this.createDir("PredeCoeff");
+    	this.percorsoCartellaPredefCoeff=this.createDir("predef_coeff");
     	this.percorsoCartellaExp= this.createDir("examples");
     	this.percorsoCartellaOutput= this.createDir("Output");
         fileList = new ArrayList<>();
