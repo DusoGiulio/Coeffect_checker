@@ -1,87 +1,66 @@
 class Main {
-public static void main ( String [] a ){
-System.out.println (new Pair());
-}
-}
-
-
-abstract class astratta
-{
-	abstract int intero();
-	
-	int prova()
-	{	
-		@Coeffect(coeffClass="Nat", exp="Nat.one()") int a;
-		return a;
+	public static void main(String[] a) {
+		System.out.println(new Pair());
 	}
 }
 
-class abstExt extends astratta
-{
-	int intero()
-	{
-		return 2;
-	}
-}
 
 class Pair {
 	A fst;
 	A snd;
 	boolean t;
 
-	Pair setFields(@Coeffect(coeffClass="Affinity", exp="Affinity.one()")Pair this, @Coeffect(coeffClass="Affinity", exp="Affinity.one()")A myFst, @Coeffect(coeffClass="Affinity", exp="Affinity.one()")A mySnd) {
+	Pair setFields(@Coeffect(coeffClass = "Affinity", exp = "Affinity.one()") Pair this,
+			@Coeffect(coeffClass = "Triv", exp = "new Triv()") A myFst,
+			@Coeffect(coeffClass = "Triv", exp = "new Triv()") A mySnd) {
 		snd = mySnd;
+		fst =myFst;
 		return this;
 	}
 
 }
+
 class A extends Pair {
-	
-	
-	A zero(@Coeffect(coeffClass="Nat", exp="Nat.one()")A this,@Coeffect(coeffClass="Nat", exp="Nat.zero()")A prova) {
-		@Coeffect(coeffClass="Nat", exp="Nat.one()") int b;
-		@Coeffect(coeffClass="Nat", exp="Nat.zero()") int c;
-		c=b;
+
+	A zero(@Coeffect(coeffClass = "Nat", exp = "Nat.one()") A this,
+			@Coeffect(coeffClass = "Nat", exp = "Nat.zero()") A prova) {
+		@Coeffect(coeffClass = "Nat", exp = "Nat.one()")
+		int b;
+		@Coeffect(coeffClass = "Nat", exp = "Nat.zero()")
+		int c;
+		c = b;
 		return fst;
 	}
 
-	
-	A drop(@Coeffect(coeffClass="Affinity", exp="Affinity.zero()")A this) {
+	A drop(@Coeffect(coeffClass = "Affinity", exp = "Affinity.zero()") A this) {
 		return new A();
 	}
 
-	A identity(@Coeffect(coeffClass="Affinity", exp="Affinity.one()")A this) {
+	A identity(@Coeffect(coeffClass = "Affinity", exp = "Affinity.one()") A this) {
 		return this;
 	}
 
-	Pair met1(@Coeffect(coeffClass="Affinity", exp="new Omega()")A this) {
-		@Coeffect(coeffClass="Affinity", exp="Affinity.one()") Pair p;
+	A duplicate(@Coeffect(coeffClass = "Affinity", exp = "new Omega()") A this) {
+		@Coeffect(coeffClass = "Affinity", exp = "Affinity.one()") A x;
+		x=this; x=this; return x;
+	}
+	
 
-		return new Pair();
-	}
-	
-	
-	A omega(@Coeffect(coeffClass="Affinity", exp="Affinity.one()") A this) {
-		@Coeffect(coeffClass="Affinity", exp="new Omega()") A a1;
-		@Coeffect(coeffClass="Affinity", exp="Affinity.one()") A a2;
-		@Coeffect(coeffClass="Affinity", exp="Affinity.one()") A a3;
-		Pair p;
-		p=a1.met1(); 
-		return a2;
-	}
-	
-	int xy()
-	{
-		@Coeffect(coeffClass="Affinity", exp="new Omega()") int x;
-		@Coeffect(coeffClass="Affinity", exp="Affinity.one()") int y;
-		x=y;
-		x=7;
-		return x+x;
+
+	int xy() {
+		@Coeffect(coeffClass = "Affinity", exp = "new Omega()")
+		int x;
+		@Coeffect(coeffClass = "Affinity", exp = "Affinity.one()")
+		int y;
+		x = y;
+		x = 7;
+		return x + x;
 	}
 
 }
+
 @CoeffectClass
- abstract class  Affinity {
+abstract class Affinity {
 
 	Affinity sup(Affinity x) {
 		Affinity result;
@@ -92,8 +71,6 @@ class A extends Pair {
 		return result;
 	}
 
-	
-	
 	boolean leq(Affinity x) {
 		return true;
 	}
@@ -110,7 +87,7 @@ class A extends Pair {
 		return new ZeroA();
 	}
 
-	 static Affinity one() {
+	static Affinity one() {
 		return new One();
 	}
 
@@ -121,8 +98,7 @@ class A extends Pair {
 			succ = (Succ) n;
 			result = Affinity.fromNat(succ.getPred());
 			result = result.sum(Affinity.one());
-		}
-		else
+		} else
 			result = Affinity.zero();
 		return result;
 	}
@@ -171,11 +147,3 @@ class Omega extends Affinity {
 		return result;
 	}
 }
-
-
-
-
-
-
-
-
