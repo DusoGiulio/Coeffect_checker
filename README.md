@@ -9,7 +9,7 @@ In the [source_code](./source_code) folder you'll find:
 
 In the [executable_code](./executable_code) folder you'll find:
 - The executable file [`Coeffect_MiniJava.jar`](./executable_code/Coeffect_MiniJava.jar)
-- The folder  [PredefCoef](./executable_code/PredefCoef) with the file `CoeffettiBase.java`
+- The folder  [PredefCoeff](./executable_code/PredefCoeff) with the file `CoeffettiBase.java`
 - The folder [examples](./executable_code/examples) with the files `CoeffInference1.java` and `CoeffInference2.java` with examples that you can run.
 
 ## **How to Use the Executable File**
