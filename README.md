@@ -24,5 +24,5 @@ In the [executable_code](./executable_code) folder you'll find:
 
 # Authors
 
-* **[Giulio Duso] - [University of Eastern Piedmont]([https://unict.it](https://www.uniupo.it/en))
-* **[Paola Giannini]([https://github.com/fmes](https://people.unipmn.it/giannini/))** - [University of Eastern Piedmont]([https://unict.it](https://www.uniupo.it/en))
+* **[Giulio Duso] ** - [University of Eastern Piedmont](https://unict.it](https://www.uniupo.it/en)
+* **[Paola Giannini]([https://github.com/fmes](https://people.unipmn.it/giannini/))** - [University of Eastern Piedmont](https://unict.it](https://www.uniupo.it/en)
