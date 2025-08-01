@@ -26,3 +26,6 @@ In the [executable_code](./executable_code) folder you'll find:
 
 * Giulio Duso - University of Eastern Piedmont (https://www.uniupo.it/en)
 * Paola Giannini (https://people.unipmn.it/giannini/) - University of Eastern Piedmont (https://www.uniupo.it/en)
+
+# Acknowledgments
+This work is supported by the MIUR project ["T-LADIES"] (https://cazzola.di.unimi.it/t-ladies.html) under grant PRIN 2020TL3X8X.
