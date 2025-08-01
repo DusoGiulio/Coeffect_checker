@@ -25,7 +25,7 @@ In the [executable_code](./executable_code) folder you'll find:
 # Authors
 
 * Giulio Duso - University of Eastern Piedmont (https://www.uniupo.it/en)
-* Paola Giannini (https://people.unipmn.it/giannini/) - University of Eastern Piedmont (https://www.uniupo.it/en)
+* [Paola Giannini](https://people.unipmn.it/giannini/) - University of Eastern Piedmont (https://www.uniupo.it/en)
 
 # Acknowledgments
-This work is supported by the MIUR project "T-LADIES" under grant PRIN 2020TL3X8X (https://cazzola.di.unimi.it/t-ladies.html).
+This work is supported by the MIUR project ["T-LADIES" under grant PRIN 2020TL3X8X](https://cazzola.di.unimi.it/t-ladies.html).
