@@ -21,3 +21,8 @@ In the [executable_code](./executable_code) folder you'll find:
    - Press the "Avvia analisi" button.
    - The results will be displayed in the text area below the buttons.
    - In the subdirectory `Output` you can the files produced by the coeffect checker.
+
+# Authors
+
+* **[Giulio Duso] - [University of Eastern Piedmont]([https://unict.it](https://www.uniupo.it/en))
+* **[Paola Giannini]([https://github.com/fmes](https://people.unipmn.it/giannini/))** - [University of Eastern Piedmont]([https://unict.it](https://www.uniupo.it/en))
